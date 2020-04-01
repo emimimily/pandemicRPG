@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace pandemicRPG.Properties
+namespace WPFUI.Properties
 {
 
 
