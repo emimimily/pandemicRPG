@@ -96,7 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj">
-      <Project>{b1ffce84-df22-4250-a1d2-798fdcd26148}</Project>
+      <Project>{b20af5b8-21b2-469a-b4c9-a74b38d2519e}</Project>
       <Name>Engine</Name>
     </ProjectReference>
   </ItemGroup>
