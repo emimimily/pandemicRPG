@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Models
 {
-    public class Question
+    public class Question 
     {
         private List<QuestionStatus> _questionStatus = new List<QuestionStatus>();
 
@@ -40,9 +40,9 @@ namespace Engine.Models
                     return stat;
                 }
             }
-
             return null;
         }
-        
+
+
     }
 }
