@@ -41,8 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Factories\ItemFactory.cs" />
     <Compile Include="Factories\QuestionFactory.cs" />
     <Compile Include="Factories\WorldFactory.cs" />
+    <Compile Include="Models\GameItem.cs" />
+    <Compile Include="Models\FamilyHealth.cs" />
     <Compile Include="Models\QuestionStatus.cs" />
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\World.cs" />
@@ -52,8 +55,49 @@
     <Compile Include="ViewModels\GameSession.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Locations\house %281%29.png" />
+    <Resource Include="Images\Locations\apartment_nyc.png" />
     <Resource Include="Images\Locations\testHome.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Locations\bank_nyc.png" />
+    <Resource Include="Images\Locations\grocery_nyc.png" />
+    <Resource Include="Images\Locations\hospital_nyc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Locations\apartment_wuhan.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Locations\bank_wuhan.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Locations\grocery_wuhan.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Locations\hospital_wuhan.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Locations\grocery_london.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Locations\apartment_london.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Family\bread.png" />
+    <Resource Include="Images\Family\dad.png" />
+    <Resource Include="Images\Family\daughter.png" />
+    <Resource Include="Images\Family\mom.png" />
+    <Resource Include="Images\Family\son.png" />
+    <Resource Include="Images\Family\spouse.png" />
+    <Resource Include="Images\Family\toilet_paper.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Family\player.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Diagrams\blank_diagram.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Diagrams\blank_map.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -9,15 +9,16 @@
         Title="Pandemic Simulator" Height="768" Width="1024">
 
 
-        <Window.Resources>
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
-        </Window.Resources>
-    
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="225"/>
+            <RowDefinition Height="75"/>
+            <RowDefinition Height="150"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -29,34 +30,16 @@
 
         <Grid Grid.Row="1" Grid.Column="0" Background="DimGray">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" Content="Name:"/>
-            <Label Grid.Row="0" Grid.Column="1" Content="{Binding CurrentPlayer.Name}"/>
-            <Label Grid.Row="1" Grid.Column="0" Content="Fitness:"/>
-            <Label Grid.Row="1" Grid.Column="1" Content="{Binding CurrentPlayer.CharacterClass}"/>
-            <Label Grid.Row="2" Grid.Column="0" Content="Health:"/>
-            <Label Grid.Row="2" Grid.Column="1" Content="{Binding CurrentPlayer.Health}"/>
-            <Label Grid.Row="3" Grid.Column="0" Content="Money:"/>
-            <Label Grid.Row="3" Grid.Column="1" Content="{Binding CurrentPlayer.Money}"/>
-            <Label Grid.Row="4" Grid.Column="0" Content="Bread:"/>
-            <Label Grid.Row="4" Grid.Column="1" Content="{Binding CurrentPlayer.Bread}"/>
-            <Label Grid.Row="5" Grid.Column="0" Content="Toilet Paper:"/>
-            <Label Grid.Row="5" Grid.Column="1" Content="{Binding CurrentPlayer.ToiletPaper}"/>
-            <Label Grid.Row="6" Grid.Column="0" Content="City:"/>
-            <Label Grid.Row="6" Grid.Column="1" Content="{Binding CurrentPlayer.City}"/>
+            <Image Grid.Row="0"  HorizontalAlignment="Right" Source="/Engine;component/Images/Diagrams/blank_map.png" Margin="-6,0,-36,292" Grid.RowSpan="2" Width="256"  />
+            <Image Grid.Row="1"  HorizontalAlignment="Right" Source="/Engine;component/Images/Diagrams/blank_diagram.png" Margin="0,34,34,0" Width="119"/>
 
         </Grid>
 
@@ -102,18 +85,129 @@
 
             </Border>
         </Grid>
-        <Label Grid.Row="2" Grid.Column="0" Content="Supplies/Family" Background="Gray"/>
+        <!--<Label Grid.Row="2" Grid.Column="0" Content="Supplies/Family" Background="Gray" Grid.RowSpan="2"/>-->
+        <Grid Grid.Row="2" Grid.Column="0" Grid.RowSpan="2">
+            <TabControl >
+                <TabItem Header="Supplies">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="140" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0" Content="" BorderBrush="Black" BorderThickness="0 0 0 .5"/>
+                        <Label Grid.Row="0" Grid.Column="1" Content="Item" BorderBrush="Black" BorderThickness="0 0 0 .5"/>
+                        <Label Grid.Row="0" Grid.Column="2" Content="Amount" BorderBrush="Black" BorderThickness="0 0 0 .5"/>
+
+                        <Label Grid.Row="1" Grid.Column="1" Content="Money:"/>
+                        <Label Grid.Row="1" Grid.Column="2" Content="{Binding CurrentPlayer.Money}"/>
+
+                        <Label Grid.Row="2" Grid.Column="1" Content="Bread:"/>
+                        <Label Grid.Row="2" Grid.Column="2" Content="{Binding CurrentPlayer.Bread}"/>
+                        <Image Grid.Row="2"  HorizontalAlignment="Right" Source="/Engine;component/Images/Family/bread.png" Width="50" Height="50" />
+
+                        <Label Grid.Row="3" Grid.Column="1" Content="Toilet Paper:"/>
+                        <Label Grid.Row="3" Grid.Column="2" Content="{Binding CurrentPlayer.ToiletPaper}"/>
+                        <Image Grid.Row="3"  HorizontalAlignment="Right" Source="/Engine;component/Images/Family/toilet_paper.png" Width="50" Height="50" />
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Family">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0" Content="" BorderBrush="Black" BorderThickness="0 0 0 .5"/>
+                        <Label Grid.Row="0" Grid.Column="1" Content="Name" BorderBrush="Black" BorderThickness="0 0 0 .5"/>
+                        <Label Grid.Row="0" Grid.Column="2" Content="Health" BorderBrush="Black" BorderThickness="0 0 0 .5"/>
+
+                        <Image Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Source="/Engine;component/Images/Family/player.png" Width="40" Height="40" />
+                        <Label Grid.Row="1" Grid.Column="1" Content="You:"/>
+                        <Label Grid.Row="1" Grid.Column="2" Content="{Binding CurrentFamilyHealth.CharacterHealth}"/>
+
+                        <Image Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Source="/Engine;component/Images/Family/spouse.png" Width="40" Height="40" />
+                        <Label Grid.Row="2" Grid.Column="1" Content="Spouse:"/>
+                        <Label Grid.Row="2" Grid.Column="2" Content="{Binding CurrentFamilyHealth.SpouseHealth}"/>
+
+                        <Image Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Source="/Engine;component/Images/Family/mom.png" Width="40" Height="40" />
+                        <Label Grid.Row="3" Grid.Column="1" Content="Mother:"/>
+                        <Label Grid.Row="3" Grid.Column="2" Content="{Binding CurrentFamilyHealth.MomHealth}"/>
+
+                        <Image Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Source="/Engine;component/Images/Family/dad.png" Width="40" Height="40" />
+                        <Label Grid.Row="4" Grid.Column="1" Content="Father:"/>
+                        <Label Grid.Row="4" Grid.Column="2" Content="{Binding CurrentFamilyHealth.DadHealth}"/>
+
+                        <Image Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" Source="/Engine;component/Images/Family/daughter.png" Width="40" Height="40" />
+                        <Label Grid.Row="5" Grid.Column="1" Content="Daughter:"/>
+                        <Label Grid.Row="5" Grid.Column="2" Content="{Binding CurrentFamilyHealth.DaughterHealth}"/>
+
+                        <Image Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" Source="/Engine;component/Images/Family/son.png" Width="40" Height="40" />
+                        <Label Grid.Row="6" Grid.Column="1" Content="Son:"/>
+                        <Label Grid.Row="6" Grid.Column="2" Content="{Binding CurrentFamilyHealth.SonHealth}"/>
+
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Profile">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <!--<Label Grid.Row="0" Grid.Column="0" Content="Trait" BorderBrush="Black" BorderThickness="0 0 0 .5"/>
+                        <Label Grid.Row="0" Grid.Column="1" Content="Value" BorderBrush="Black" BorderThickness="0 0 0 .5"/> -->
+                        <Label Grid.Row="0" Grid.Column="0" Content="Name:"/>
+                        <Label Grid.Row="0" Grid.Column="1" Content="{Binding CurrentPlayer.Name}"/>
+                        <Label Grid.Row="1" Grid.Column="0" Content="Job:"/>
+                        <Label Grid.Row="1" Grid.Column="1" Content="{Binding CurrentPlayer.Job}"/>
+                        <Label Grid.Row="2" Grid.Column="0" Content="City:"/>
+                        <Label Grid.Row="2" Grid.Column="1" Content="{Binding CurrentPlayer.City}"/>
+                        <Label Grid.Row="3" Grid.Column="0" Content="Fitness:"/>
+                        <Label Grid.Row="3" Grid.Column="1" Content="{Binding CurrentPlayer.CharacterClass}"/>
+
+
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+
+
 
         <Grid Grid.Row="2" Grid.Column="1"
       Background="LightGray">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -124,18 +218,30 @@
                        VerticalAlignment="Center"
                        TextWrapping="Wrap"
                        Text="{Binding CurrentQuestionStatus.Message}">
-                <TextBlock.DataContext>
-                    <ViewModels:GameSession/>
-                </TextBlock.DataContext>
-                
             </TextBlock>
+        </Grid>
+
+        <Grid Grid.Row="3" Grid.Column="1" Background="LightGray">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
             <Button x:Name="Button1" 
                     Grid.Row="1"
                     Grid.Column="0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Content="Yes" 
-                    RenderTransformOrigin="6.333,0.5" Margin="0,46" Width="67"
+                    Content="Easy"  Width="67"
                     Visibility="{Binding HasButton1, Converter={StaticResource BooleanToVisibility}}"
                     
                     Click="Button1Click"/>
@@ -145,18 +251,54 @@
                     Grid.Column="1"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="No"
-                    RenderTransformOrigin="6.333,0.5" Margin="0,46" Width="67"
+                    Content="Hard" Width="67"
                     Visibility="{Binding HasButton2, Converter={StaticResource BooleanToVisibility}}"
 
                     Click="Button2Click"/>
             <StackPanel Orientation="Horizontal" Visibility="{Binding HasUpDown, Converter={StaticResource BooleanToVisibility}}"
                         Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                
-                <TextBox x:Name="txtNum" x:FieldModifier="private" Margin="5,5,0,5" Width="50" Text="0" TextChanged="txtNum_TextChanged" />
+
+                <TextBox x:Name="txtNum" x:FieldModifier="private" Margin="5,5,0,5" Width="50" Text="0" TextChanged="txtNum_TextChanged" IsReadOnly="True"/>
                 <Button x:Name="cmdUp" x:FieldModifier="private" Margin="5,5,0,5" Content="˄" Width="20" Click="cmdUp_Click" />
                 <Button x:Name="cmdDown" x:FieldModifier="private" Margin="0,5,0,5"  Content="˅" Width="20" Click="cmdDown_Click" />
             </StackPanel>
+
+            <CheckBox x:Name="Character"
+                      Grid.Row="0"
+                      Grid.Column="0"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Visibility="{Binding HasCheckMe, Converter={StaticResource BooleanToVisibility}}">Me</CheckBox>
+            <CheckBox x:Name="Spouse"
+                      Grid.Row="0"
+                      Grid.Column="1"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Visibility="{Binding HasCheckSpouse, Converter={StaticResource BooleanToVisibility}}">Spouse</CheckBox>
+            <CheckBox x:Name="Mother"
+                      Grid.Row="0"
+                      Grid.Column="2"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Visibility="{Binding HasCheckMother, Converter={StaticResource BooleanToVisibility}}">Mother</CheckBox>
+            <CheckBox x:Name="Father"
+                      Grid.Row="0"
+                      Grid.Column="3"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Visibility="{Binding HasCheckFather, Converter={StaticResource BooleanToVisibility}}">Father</CheckBox>
+            <CheckBox x:Name="Daughter"
+                      Grid.Row="0"
+                      Grid.Column="4"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Visibility="{Binding HasCheckDaughter, Converter={StaticResource BooleanToVisibility}}">Daughter</CheckBox>
+            <CheckBox x:Name="Son"
+                      Grid.Row="0"
+                      Grid.Column="5"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Visibility="{Binding HasCheckSon, Converter={StaticResource BooleanToVisibility}}">Son</CheckBox>
 
 
         </Grid>

@@ -6,16 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
  
 namespace Engine.Models
-{   
+{
     public class Player : INotifyPropertyChanged
     {
         private string _name;
         private string _characterClass;
-        private string _city; 
-        private int _health;
+        private string _city;
+        //private int _health;
         private int _money;
-        private int _toiletPaper;
-        private int _bread;
+        private decimal _toiletPaper;
+        private double _bread;
+        private string _job;
+        private string _mode;
 
         public string Name
         {
@@ -27,7 +29,7 @@ namespace Engine.Models
             }
         }
 
-        public string City 
+        public string City
         {
             get { return _city; }
             set
@@ -47,7 +49,17 @@ namespace Engine.Models
             }
 
         }
-        public int Health
+
+        public string Job
+        {
+            get { return _job; }
+            set
+            {
+                _job = value;
+                OnPropertyChanged("Job");
+            }
+        }
+        /*public int Health
         {
             get { return _health; }
             set
@@ -56,7 +68,7 @@ namespace Engine.Models
                 OnPropertyChanged("Health");
             }
 
-        }
+        }*/
         public int Money
         {
             get { return _money; }
@@ -68,7 +80,7 @@ namespace Engine.Models
 
         }
 
-        public int Bread
+        public double Bread
         {
             get { return _bread; }
             set
@@ -78,7 +90,7 @@ namespace Engine.Models
             }
         }
 
-        public int ToiletPaper 
+        public decimal ToiletPaper
         {
             get { return _toiletPaper; }
             set
@@ -87,6 +99,16 @@ namespace Engine.Models
                 OnPropertyChanged("ToiletPaper");
             }
 
+        }
+
+        public string Mode
+        {
+            get { return _mode; }
+            set
+            {
+                _mode = value;
+                OnPropertyChanged("Mode");
+            }
         }
 
 
