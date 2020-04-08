@@ -137,6 +137,9 @@ namespace WPFUI
                     _gameSession.HasButton2 = false;
                     Button1.Content = "Ok";
                     break;
+                case "You feel extremely unwell. Do you want to go to the emergency room?":
+                    _gameSession.EmergencyYes();
+                    break;
                 case "The hospital did not have enough tests to test you for the virus. You were instructed to go back home and self-quarantine.":
                     _gameSession.NotEnoughTests();
                     _gameSession.HasButton2 = true;
@@ -146,6 +149,30 @@ namespace WPFUI
                     _gameSession.NotEnoughTests();
                     _gameSession.HasButton2 = true;
                     Button1.Content = "Yes";
+                    break;
+                case "You tested positive for the coronavirus. Do you want to be admitted to the hospital?":
+                    _gameSession.HospitalizedYes();
+                    _gameSession.HasButton2 = false;
+                    Button1.Content = "Ok";
+                    break;
+                case "You were admitted to the hospital.":
+                    _gameSession.AdmittedOk();
+                    //_gameSession.HasButton2 = true;
+                    //Button1.Content = "Yes";
+                    break;
+                case "The hospital does not have enough ventilators to accomodate you.":
+                    _gameSession.NotAdmittedOk();
+                    _gameSession.HasButton2 = true;
+                    Button1.Content = "Yes";
+                    break;
+                case "You miserably spent your day in the hospital.":
+                    _gameSession.HospitalMiserable();
+                    break;
+                case "You spent your day in the hospital. You feel slightly better, but lonely.":
+                    _gameSession.HospitalBetter();
+                    break;
+                case "You have officially recovered from the coronavirus and may go home.":
+                    _gameSession.HospitableRecovered();
                     break;
                 default:
                     break;
@@ -387,6 +414,13 @@ namespace WPFUI
                 case "You seem to be losing your sense of smell and taste. You had diarrhea this morning too. Do you want to get tested for the coronavirus?":
                     _gameSession.TestNo();
                     break;
+                case "You feel extremely unwell. Do you want to go to the emergency room?":
+                    _gameSession.EmergencyNo();
+                    break;
+                case "You tested positive for the coronavirus. Do you want to be admitted to the hospital?":
+                    _gameSession.HospitalizedNo();
+                    break;
+
                 default:
                     break;
             }

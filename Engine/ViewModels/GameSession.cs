@@ -171,7 +171,10 @@ namespace Engine.ViewModels
                 Stage = "Regular",
                 InfectionChance = 0,
                 InfectionSeverity = 0,
-                ConfirmedInfection = false
+                ConfirmedInfection = false,
+                DaysSinceTested = 0,
+                Tested = false,
+                Hospitalized=false
             };
 
             WorldFactory factory = new WorldFactory();
@@ -216,7 +219,7 @@ namespace Engine.ViewModels
 
         public void CityLondon()
         {
-            CurrentDay.Date = "3/21/20";
+            CurrentDay.Date = "3/15/20";
             CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", CurrentPlayer.Stage, "Any", "Any", "Yes", 1);
             CurrentLocation = CurrentWorld.LocationAt(3, 0);
             CurrentPlayer.City = "London";
@@ -249,7 +252,14 @@ namespace Engine.ViewModels
         }
         public void WorkNo()
         {
-            CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Regular", "Any", "Any", "No", 1);
+            if (CurrentPlayer.ConfirmedInfection == true)
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Regular", "Any", "16+", "Yes", 1);
+            }
+            else
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Regular", "Any", "Any", "No", 1);
+            }
             CurrentPlayer.InfectionSeverity = gsf.infection(CurrentPlayer.InfectionChance, CurrentPlayer.InfectionSeverity, false);
         }
         public void WorkWashYes()
@@ -420,6 +430,11 @@ namespace Engine.ViewModels
         {
             CurrentDay.Date = gsf.nextDay(CurrentDay.Date);
             bool quarantineTomorrow = false;
+            if (CurrentPlayer.InfectionSeverity == 19)
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "20", "Any", 5);
+                return;
+            }
             if(CurrentPlayer.City=="London" && CurrentDay.Date == "3/23/20") //london quarantine
             {
                 CurrentPlayer.Stage = "Quarantine";
@@ -449,14 +464,15 @@ namespace Engine.ViewModels
                 CurrentPlayer.InfectionSeverity = gsf.infectionDay(CurrentPlayer.InfectionSeverity, false, CurrentPlayer.CharacterClass);
             }
 
-            if(CurrentPlayer.InfectionSeverity >= 16 && !quarantineTomorrow) //infection message
+            if (CurrentPlayer.Tested == true) { CurrentPlayer.DaysSinceTested++; }
+            if (CurrentPlayer.InfectionSeverity >= 16 && !quarantineTomorrow) //infection message
             {
-                if (CurrentPlayer.ConfirmedInfection == false)
+                if (CurrentPlayer.ConfirmedInfection == false && CurrentPlayer.Tested==false)
                 {
                     switch (CurrentPlayer.InfectionSeverity)
                     {
                         case 16:
-                            CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "16", "Any", 1);
+                            CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "16", "Any", 1); //get tested
                             break;
                         case 17:
                             CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "17", "Any", 2);
@@ -467,12 +483,27 @@ namespace Engine.ViewModels
                         case 19:
                             CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "19", "Any", 4);
                             break;
-                        case 20:
+                        case 20: //should only be there if obese
+                            CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "20", "Any", 5);
+                            break;
+                        default:
                             CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "20", "Any", 5);
                             break;
                     }
                 }
             }
+            if (!quarantineTomorrow)
+            {
+                if (CurrentPlayer.DaysSinceTested == 2)
+                {
+                    CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "16+", "Any", 8); //get confirmed positive
+                }
+                if (CurrentPlayer.ConfirmedInfection == true && CurrentPlayer.Hospitalized == false)
+                {
+                    CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "16+ ", "Any", 9); //get to the hospital
+                }
+            }
+            
         }
 
         public void DinnerBread()
@@ -488,7 +519,7 @@ namespace Engine.ViewModels
         public void TestYes()
         {
             CurrentLocation=CurrentWorld.LocationAt(CurrentLocation.XCoordinate-1, CurrentLocation.YCoordinate);
-            if (gsf.testChance(CurrentPlayer.Stage)) { CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "16+", "Any", 6); } else
+            if (gsf.testChance(CurrentPlayer.Stage)) { CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "16+", "Any", 6); CurrentPlayer.Tested = true; } else
             {
                 CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "16+", "Any", 7);
             }
@@ -515,6 +546,163 @@ namespace Engine.ViewModels
             else
             {
                 CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Regular", "Any", "Any", "Yes", 1);
+            }
+        }
+
+        public void EmergencyYes() //not confirmed infection
+        {
+            CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate);
+            if (gsf.hospitalizationChance(CurrentPlayer.Stage) == true)
+            {
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate);
+                CurrentPlayer.Hospitalized = true; //chance
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "16+", "Any", 9); //"You were admitted to the hospital."
+            }
+            else
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Crisis", "Any", "16+", "Any", 1); //The hospital does not have enough ventilators to accomodate you."
+            }
+        }
+
+        public void EmergencyNo() //not confirmed infection
+        {
+            if (CurrentPlayer.Stage == "Regular")
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Regular", "Any", "Any", "Yes", 1); //"Do you want to go to work?"
+            }
+            else
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Quarantine", "Any", "Any", "Any", 3); //Do you want to go to the store? You should maintain social distancing."
+            }
+        }
+
+        public void HospitalizedYes()
+        {
+            CurrentPlayer.ConfirmedInfection = true;
+            if (gsf.hospitalizationChance(CurrentPlayer.Stage) == true)
+            {
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate);
+                CurrentPlayer.Hospitalized = true; //chance
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "16+", "Any", 9); //"You were admitted to the hospital."
+            }
+            else
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Crisis", "Any", "16+", "Any", 1); //The hospital does not have enough ventilators to accomodate you."
+            }
+        }
+
+        public void HospitalizedNo()
+        {
+            CurrentPlayer.ConfirmedInfection = true;
+            if (CurrentPlayer.Stage == "Regular")
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Regular", "Any", "Any", "Yes", 1); //"Do you want to go to work?"
+            }
+            else
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Quarantine", "Any", "Any", "Any", 3); //Do you want to go to the store? You should maintain social distancing."
+            }
+        }
+
+        public void AdmittedOk()
+        {
+            CurrentQuestionStatus = CurrentQuestion.StatusAt("Hospital", "Any", "Any", "Any", "16+", "Any", 1); //You miserably spent your day in the hospital.
+        }
+
+        public void NotAdmittedOk()
+        {
+            CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate);
+            if (CurrentPlayer.Stage == "Regular")
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Regular", "Any", "Any", "Yes", 1); //"Do you want to go to work?"
+            }
+            else
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Quarantine", "Any", "Any", "Any", 3); //Do you want to go to the store? You should maintain social distancing."
+            }
+        }
+
+        public void HospitalMiserable()
+        {
+            CurrentDay.Date = gsf.nextDay(CurrentDay.Date);
+            int originalSeverity = CurrentPlayer.InfectionSeverity;
+            CurrentPlayer.InfectionSeverity = gsf.infection(CurrentPlayer.InfectionChance, CurrentPlayer.InfectionSeverity, false); //update infection
+            if (CurrentPlayer.InfectionSeverity > 0)
+            {
+                CurrentPlayer.InfectionSeverity = gsf.infectionDay(CurrentPlayer.InfectionSeverity, true, CurrentPlayer.CharacterClass);
+            }
+
+            if (originalSeverity > CurrentPlayer.InfectionSeverity)
+            {
+                if (CurrentPlayer.InfectionSeverity == 0)
+                {
+                    CurrentQuestionStatus = CurrentQuestion.StatusAt("Hospital", "Any", "Any", "Any", "Any", "Any", 3); //"You have officially recovered from the coronavirus and may go home."
+                }
+                else
+                {
+                    CurrentQuestionStatus = CurrentQuestion.StatusAt("Hospital", "Any", "Any", "Any", "Any", "Any", 2); //You spent your day in the hospital. You feel slightly better, but lonely.
+                }
+                
+            }
+            else //original severity is less than current severity
+            {
+                if (CurrentPlayer.InfectionSeverity >= 20)
+                {
+                    CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "20", "Any", 5); //You passed away from the coronavirus.
+                    return;
+                }
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Hospital", "Any", "Any", "Any", "16+", "Any", 1); //You miserably spent your day in the hospital.
+            }
+        }
+        public void HospitalBetter()
+        {
+            CurrentDay.Date = gsf.nextDay(CurrentDay.Date);
+            int originalSeverity = CurrentPlayer.InfectionSeverity;
+            CurrentPlayer.InfectionSeverity = gsf.infection(CurrentPlayer.InfectionChance, CurrentPlayer.InfectionSeverity, false); //update infection
+            if (CurrentPlayer.InfectionSeverity > 0)
+            {
+                CurrentPlayer.InfectionSeverity = gsf.infectionDay(CurrentPlayer.InfectionSeverity, true, CurrentPlayer.CharacterClass);
+            }
+            if (originalSeverity > CurrentPlayer.InfectionSeverity)
+            {
+                if (CurrentPlayer.InfectionSeverity == 0)
+                {
+                    CurrentQuestionStatus = CurrentQuestion.StatusAt("Hospital", "Any", "Any", "Any", "Any", "Any", 3); //"You have officially recovered from the coronavirus and may go home."
+                }
+                else
+                {
+                    CurrentQuestionStatus = CurrentQuestion.StatusAt("Hospital", "Any", "Any", "Any", "Any", "Any", 2); //You spent your day in the hospital. You feel slightly better, but lonely.
+                }
+
+            }
+            else
+            {
+                if (CurrentPlayer.InfectionSeverity >= 20)
+                {
+                    CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "20", "Any", 5); //You passed away from the coronavirus.
+                    return;
+                }
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Hospital", "Any", "Any", "Any", "16+", "Any", 1); //You miserably spent your day in the hospital.
+            }
+        }
+
+        public void HospitableRecovered()
+        {
+            CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate);
+            if(CurrentPlayer.Job != "None")
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Regular", "Any", "Any", "Yes", 1); //"Do you want to go to work?"
+            }
+            else
+            {
+                if (CurrentPlayer.Stage == "Regular")
+                {
+                    CurrentQuestionStatus = CurrentQuestion.StatusAt("Work", "Any", "Regular", "Any", "Any", "Any", 2); //"Do you want to go to the store?"
+                }
+                else
+                {
+                    CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Quarantine", "Any", "Any", "Any", 3); //"Do you want to go to the store? You should maintain social distancing."
+                }
             }
         }
 

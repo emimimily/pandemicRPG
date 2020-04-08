@@ -93,14 +93,28 @@ namespace Engine.Factories
             newQuestion.AddStatus("Home", "Any", "Any", "Any", "16+", "Any", 7,
                 "The hospital did not have enough tests to test you for the virus. You were instructed to go back home and self-quarantine.");
 
-            newQuestion.AddStatus("Home", "Any", "Any", "Any", "16+", "Any", 7,
+            newQuestion.AddStatus("Home", "Any", "Any", "Any", "16+", "Any", 8,
                 "You tested positive for the coronavirus. Do you want to be admitted to the hospital?");
 
-            newQuestion.AddStatus("Home", "Any", "Crisis", "Any", "16+", "Any", 8,
+            newQuestion.AddStatus("Home", "Any", "Crisis", "Any", "16+", "Any", 1,
                 "The hospital does not have enough ventilators to accomodate you.");
 
-            newQuestion.AddStatus("Home", "Any", "Crisis", "Any", "16+", "Any", 8,
+            newQuestion.AddStatus("Home", "Any", "Any", "Any", "16+", "Any", 9,
                 "You were admitted to the hospital.");
+
+            newQuestion.AddStatus("Home", "Any", "Any", "Any", "16+", "Any", 9,
+                "Do you want to be admitted to the hospital?");
+
+            newQuestion.AddStatus("Home", "Any", "Regular", "Any", "16+", "Yes", 1,
+                "Your boss excused your absence and wished you a fast recovery.");
+
+            //HOSPITAL
+            newQuestion.AddStatus("Hospital", "Any", "Any", "Any", "16+", "Any", 1,
+                "You miserably spent your day in the hospital.");
+            newQuestion.AddStatus("Hospital", "Any", "Any", "Any", "Any", "Any", 2,
+                "You spent your day in the hospital. You feel slightly better, but lonely.");
+            newQuestion.AddStatus("Hospital", "Any", "Any", "Any", "Any", "Any", 3,
+                "You have officially recovered from the coronavirus and may go home.");
             return newQuestion;
            
         }

@@ -22,6 +22,9 @@ namespace Engine.Models
         private double _infectionChance;
         private int _infectionSeverity;
         private bool _confirmedInfection;
+        private bool _tested;
+        private int _daysSinceTested;
+        private bool _hospitalized;
 
         public string Name
         {
@@ -145,6 +148,16 @@ namespace Engine.Models
             }
         }
 
+        public bool Tested
+        {
+            get { return _tested; }
+            set
+            {
+                _tested = value;
+                OnPropertyChanged("Tested");
+            }
+        }
+
         public bool ConfirmedInfection
         {
             get { return _confirmedInfection; }
@@ -155,6 +168,25 @@ namespace Engine.Models
             }
         }
 
+        public int DaysSinceTested
+        {
+            get { return _daysSinceTested; }
+            set
+            {
+                _daysSinceTested = value;
+                OnPropertyChanged("DaysSinceTested");
+            }
+        }
+
+        public bool Hospitalized
+        {
+            get { return _hospitalized; }
+            set
+            {
+                _hospitalized= value;
+                OnPropertyChanged("Hospitalized");
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -242,6 +242,10 @@
                             <RowDefinition Height="25" />
                             <RowDefinition Height="25" />
                             <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50" />
@@ -261,6 +265,11 @@
                         <Label Grid.Row="4" Grid.Column="1" Content="{Binding CurrentPlayer.InfectionChance}"/>
                         <Label Grid.Row="5" Grid.Column="0" Content="IS:"/>
                         <Label Grid.Row="5" Grid.Column="1" Content="{Binding CurrentPlayer.InfectionSeverity}"/>
+                        <Label Grid.Row="6" Grid.Column="0" Content="Tested:"/>
+                        <Label Grid.Row="6" Grid.Column="1" Content="{Binding CurrentPlayer.Tested}"/>
+                        <Label Grid.Row="7" Grid.Column="0" Content="DST:"/>
+                        <Label Grid.Row="7" Grid.Column="1" Content="{Binding CurrentPlayer.DaysSinceTested}"/>
+
 
 
 

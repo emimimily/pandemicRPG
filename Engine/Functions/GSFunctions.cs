@@ -87,13 +87,13 @@ namespace Engine.Functions
             int randomRoll = rnd.Next(1, 13);
             if (health == "Obese")
             {
-                if (randomRoll <= 6) { newSeverity += 2; }
+                if (randomRoll <= 6) { newSeverity += 4; }
                 if (randomRoll <= 10 && randomRoll > 6) { newSeverity--; }
             }
             if (health == "Healthy")
             {
-                if (randomRoll <= 6) { newSeverity += 15; }
-                if (randomRoll <= 10 && randomRoll > 6) { newSeverity--; }
+                if (randomRoll <= 8) { newSeverity += 2; } //<=6
+                if (randomRoll <= 10 && randomRoll > 8) { newSeverity--; }
             }
             if (atHospital) { newSeverity--; }
             return newSeverity;
@@ -106,7 +106,7 @@ namespace Engine.Functions
             bool test = false;
             if (stage == "Regular") //10%
             {
-                if (randomRoll == 1) { test = true; }
+                if (randomRoll <=10) { test = true; }
             }
             if (stage == "Quarantine") //30%
             {
@@ -117,6 +117,26 @@ namespace Engine.Functions
                 if (randomRoll <= 9) { test = true; }
             }
             return test;
+        }
+
+        public bool hospitalizationChance(string stage)
+        {
+            Random rnd = new Random();
+            int randomRoll = rnd.Next(1, 11);
+            bool ventilator = false;
+            if (stage == "Regular") //100%
+            {
+                if (randomRoll <= 10) { ventilator = true; }
+            }
+            if (stage == "Quarantine") //80%
+            {
+                if (randomRoll <= 8) { ventilator = true; }
+            }
+            if (stage == "Crisis")//30%
+            {
+                if (randomRoll <= 3) { ventilator = true; }
+            }
+            return ventilator;
         }
     }
 }
