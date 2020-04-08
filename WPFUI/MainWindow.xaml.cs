@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Engine.ViewModels;
 using System.Text.RegularExpressions;
+using Engine.EventArgs;
 
 namespace WPFUI
 {
@@ -29,6 +30,8 @@ namespace WPFUI
             InitializeComponent();
 
             _gameSession = new GameSession();
+
+            _gameSession.OnMessageRaised += OnGameMessageRaised;
 
             DataContext = _gameSession;
 
@@ -46,17 +49,22 @@ namespace WPFUI
                     _gameSession.CityLondon();
                     Button1.Content = "Yes";
                     Button2.Content = "No";
+                    _gameSession.RaiseMessage(_gameSession.CurrentDay.Date);
+                    _gameSession.RaiseMessage("You live in London, England, as a banker. ");
                     break;
                 case "Which hard mode city do you want to play in?":
                     _gameSession.CityWuhan();
                     Button1.Content = "Yes";
                     Button2.Content = "No";
+                    _gameSession.RaiseMessage("You live in Wuhan, China, as a bank customer representative.");
                     break;
                 case "Do you want to go to work?":
                     _gameSession.WorkYes();
+                    _gameSession.RaiseMessage("You went to work.");
                     break;
                 case "You shook hands with your boss at work, who seems to be sick; do you want to wash your hands? This will take time, and reduce your day’s pay by 10%.":
                     _gameSession.WorkWashYes();
+                    _gameSession.RaiseMessage("You shook hands with your sick boss today, but you washed your hands.");
                     break;
                 case "Your boss did not consider your excuse to be valid, so you were fired from your job.":
                     _gameSession.FiredOk();
@@ -97,7 +105,49 @@ namespace WPFUI
                     Daughter.IsChecked = !Daughter.IsChecked;
                     Son.IsChecked = !Son.IsChecked;
                     break;
-                default :
+                case "This morning you recieved an email-- due to concerns over the coronavirus, you may no longer go to work. You were laid off.":
+                    _gameSession.SocialDistanceOk();
+                    _gameSession.HasButton2 = true;
+                    Button1.Content = "Yes";
+                    break;
+                case "You should begin practicing social distancing due to concerns over the virus.":
+                    _gameSession.SocialDistanceOk();
+                    _gameSession.HasButton2 = true;
+                    Button1.Content = "Yes";
+                    break;
+                case "Do you want to go to the store? You should maintain social distancing.":
+                    _gameSession.StoreYes();
+                    _gameSession.HasButton1 = false;
+                    _gameSession.HasButton2 = true;
+                    _gameSession.HasUpDown = true;
+                    Button2.Content = "Ok";
+                    break;
+                case "You are not feeling well, and coming down with a fever. Do you want to get tested for the coronavirus?":
+                    _gameSession.TestYes();
+                    _gameSession.HasButton2 = false;
+                    Button1.Content = "Ok";
+                    break;
+                case "Along with your fever, you are starting to experience dry cough and shortness of breath. Do you want to get tested for the coronavirus?":
+                    _gameSession.TestYes();
+                    _gameSession.HasButton2 = false;
+                    Button1.Content = "Ok";
+                    break;
+                case "You seem to be losing your sense of smell and taste. You had diarrhea this morning too. Do you want to get tested for the coronavirus?":
+                    _gameSession.TestYes();
+                    _gameSession.HasButton2 = false;
+                    Button1.Content = "Ok";
+                    break;
+                case "The hospital did not have enough tests to test you for the virus. You were instructed to go back home and self-quarantine.":
+                    _gameSession.NotEnoughTests();
+                    _gameSession.HasButton2 = true;
+                    Button1.Content = "Yes";
+                    break;
+                case "You were tested for COVID-19 and will recieve results in two days. You were instructed to go back home and self-quarantine.":
+                    _gameSession.NotEnoughTests();
+                    _gameSession.HasButton2 = true;
+                    Button1.Content = "Yes";
+                    break;
+                default:
                     break;
             }
             
@@ -239,8 +289,19 @@ namespace WPFUI
                         _gameSession.CurrentPlayer.Bread -= membersEaten * .5;
 
                         _gameSession.DinnerOk();
-                        Button1.Content = "Yes";
-                        Button2.Content = "No";
+                        if (_gameSession.CurrentPlayer.City == "London" && _gameSession.CurrentDay.Date=="3/23/20") //quarantine message
+                        {
+
+                            _gameSession.HasButton2 = false;
+                            Button1.Content = "Ok";
+                            Button2.Content = "No";
+
+                        }
+                        else
+                        {
+                            Button1.Content = "Yes";
+                            Button2.Content = "No";
+                        }
 
                         Character.IsChecked = false;
                         Spouse.IsChecked = false;
@@ -255,6 +316,8 @@ namespace WPFUI
                         _gameSession.HasCheckFather = false;
                         _gameSession.HasCheckDaughter = false;
                         _gameSession.HasCheckSon = false;
+                        _gameSession.RaiseMessage("");
+                        _gameSession.RaiseMessage(_gameSession.CurrentDay.Date);
                     }
                     else
                     {
@@ -275,8 +338,16 @@ namespace WPFUI
                         _gameSession.CurrentPlayer.Bread -= membersEaten2 * .5;
 
                         _gameSession.DinnerOk();
-                        Button1.Content = "Yes";
-                        Button2.Content = "No";
+                        if (_gameSession.CurrentPlayer.Stage == "Quarantine")
+                        {
+                            _gameSession.HasButton2 = false;
+                            Button1.Content = "Ok";
+                            Button2.Content = "No";
+                        } else
+                        {
+                            Button1.Content = "Yes";
+                            Button2.Content = "No";
+                        }
 
                         Character.IsChecked = false;
                         Spouse.IsChecked = false;
@@ -291,16 +362,41 @@ namespace WPFUI
                         _gameSession.HasCheckFather = false;
                         _gameSession.HasCheckDaughter = false;
                         _gameSession.HasCheckSon = false;
+
+                        
                     }
                     else
                     {
                         _gameSession.DinnerBread();
                     }
                     break;
+                case "Do you want to go to the store? You should maintain social distancing.":
+                    _gameSession.StoreNo();
+                    if (QuestionText.Text == "Who will eat dinner today?")
+                    {
+                        Button1.Content = "Check all";
+                        Button2.Content = "Ok";
+                    }
+                    break;
+                case "You are not feeling well, and coming down with a fever. Do you want to get tested for the coronavirus?":
+                    _gameSession.TestNo();
+                    break;
+                case "Along with your fever, you are starting to experience dry cough and shortness of breath. Do you want to get tested for the coronavirus?":
+                    _gameSession.TestNo();
+                    break;
+                case "You seem to be losing your sense of smell and taste. You had diarrhea this morning too. Do you want to get tested for the coronavirus?":
+                    _gameSession.TestNo();
+                    break;
                 default:
                     break;
             }
 
+        }
+
+        private void OnGameMessageRaised(object sender, GameMessageEventArgs e)
+        {
+            GameMessages.Document.Blocks.Add(new Paragraph(new Run(e.Message)));
+            GameMessages.ScrollToEnd();
         }
 
         private int _numValue = 0;
@@ -347,7 +443,6 @@ namespace WPFUI
             if (!int.TryParse(txtNum.Text, out _numValue))
                 txtNum.Text = _numValue.ToString();
         }
-
 
     }
 }

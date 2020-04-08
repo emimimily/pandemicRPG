@@ -62,9 +62,45 @@ namespace Engine.Factories
             //STAGE 2/QUARANTINE
             newQuestion.AddStatus("Home", "Any", "Quarantine", "Any", "Any", "Yes", 1,
                 "This morning you recieved an email-- due to concerns over the coronavirus, you may no longer go to work. You were laid off.");
-            newQuestion.AddStatus("Home", "Any", "Quarantine", "Any", "Any", "Any", 2,
+            newQuestion.AddStatus("Home", "Any", "Quarantine", "Any", "Any", "Yes", 2,
+                "You should begin practicing social distancing due to concerns over the virus.");
+            newQuestion.AddStatus("Home", "Any", "Quarantine", "Any", "Any", "Any", 3,
                 "Do you want to go to the store? You should maintain social distancing.");
 
+            //STAGE 3/CRISIS
+            newQuestion.AddStatus("Home", "Any", "Quarantine", "Any", "Any", "Yes", 1,
+                "On the news this morning, they announced the ...");
+
+            //INFECTION SEVERITY
+            newQuestion.AddStatus("Home", "Any", "Any", "Any", "16", "Any", 1,
+                "You are not feeling well, and coming down with a fever. Do you want to get tested for the coronavirus?");
+
+            newQuestion.AddStatus("Home", "Any", "Any", "Any", "17", "Any", 2,
+                "Along with your fever, you are starting to experience dry cough and shortness of breath. Do you want to get tested for the coronavirus?");
+
+            newQuestion.AddStatus("Home", "Any", "Any", "Any", "18", "Any", 3,
+                "You seem to be losing your sense of smell and taste. You had diarrhea this morning too. Do you want to get tested for the coronavirus?");
+
+            newQuestion.AddStatus("Home", "Any", "Any", "Any", "19", "Any", 4,
+                "You feel extremely unwell. Do you want to go to the emergency room?");
+
+            newQuestion.AddStatus("Home", "Any", "Any", "Any", "20", "Any", 5,
+                "You passed away from the coronavirus.");
+
+            newQuestion.AddStatus("Home", "Any", "Any", "Any", "16+", "Any", 6,
+                "You were tested for COVID-19 and will recieve results in two days. You were instructed to go back home and self-quarantine.");
+
+            newQuestion.AddStatus("Home", "Any", "Any", "Any", "16+", "Any", 7,
+                "The hospital did not have enough tests to test you for the virus. You were instructed to go back home and self-quarantine.");
+
+            newQuestion.AddStatus("Home", "Any", "Any", "Any", "16+", "Any", 7,
+                "You tested positive for the coronavirus. Do you want to be admitted to the hospital?");
+
+            newQuestion.AddStatus("Home", "Any", "Crisis", "Any", "16+", "Any", 8,
+                "The hospital does not have enough ventilators to accomodate you.");
+
+            newQuestion.AddStatus("Home", "Any", "Crisis", "Any", "16+", "Any", 8,
+                "You were admitted to the hospital.");
             return newQuestion;
            
         }

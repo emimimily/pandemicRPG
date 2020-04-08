@@ -18,6 +18,10 @@ namespace Engine.Models
         private double _bread;
         private string _job;
         private string _mode;
+        private string _stage;
+        private double _infectionChance;
+        private int _infectionSeverity;
+        private bool _confirmedInfection;
 
         public string Name
         {
@@ -108,6 +112,46 @@ namespace Engine.Models
             {
                 _mode = value;
                 OnPropertyChanged("Mode");
+            }
+        }
+
+        public string Stage
+        {
+            get { return _stage; }
+            set
+            {
+                _stage = value;
+                OnPropertyChanged("Stage");
+            }
+        }
+
+        public double InfectionChance
+        {
+            get { return _infectionChance; }
+            set
+            {
+                _infectionChance = value;
+                OnPropertyChanged("InfectionChance");
+            }
+        }
+
+        public int InfectionSeverity
+        {
+            get { return _infectionSeverity; }
+            set
+            {
+                _infectionSeverity = value;
+                OnPropertyChanged("InfectionSeverity");
+            }
+        }
+
+        public bool ConfirmedInfection
+        {
+            get { return _confirmedInfection; }
+            set
+            {
+                _confirmedInfection = value;
+                OnPropertyChanged("ConfirmedInfection");
             }
         }
 

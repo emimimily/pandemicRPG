@@ -52,7 +52,7 @@ namespace Engine.Factories
             newWorld.AddLocation(-3, 0,
                  "Home",
                  "This is your apartment.",
-                 "/Engine;component/Images/Locations/house (1).png");
+                 "/Engine;component/Images/Locations/apartment_nyc.png");
             newWorld.AddLocation(-2, 0,
                 "Store",
                 "This is a grocery store.",
@@ -78,11 +78,11 @@ namespace Engine.Factories
             newWorld.AddLocation(3, 1,
                 "Work",
                 "You are at work.",
-                "/Engine;component/Images/Locations/testHome.png");
+                "/Engine;component/Images/Locations/bank_nyc.png");
             newWorld.AddLocation(2, 0,
                 "Hospital",
                 "You are at a hospital.",
-                "/Engine;component/Images/Locations/testHome.png");
+                "/Engine;component/Images/Locations/hospital_nyc.png");
             return newWorld;
         }
     }
