@@ -25,6 +25,10 @@ namespace Engine.Models
         private bool _tested;
         private int _daysSinceTested;
         private bool _hospitalized;
+        private int _daysSinceStart;
+        private int _dailyIncome;
+
+        private List<QuestionStatus> _nextDayMessages;
 
         public string Name
         {
@@ -183,8 +187,38 @@ namespace Engine.Models
             get { return _hospitalized; }
             set
             {
-                _hospitalized= value;
+                _hospitalized = value;
                 OnPropertyChanged("Hospitalized");
+            }
+        }
+
+        public int DaysSinceStart
+        {
+            get { return _daysSinceStart; }
+            set
+            {
+                _daysSinceStart = value;
+                OnPropertyChanged("DaysSinceStart");
+            }
+        }
+
+        public int DailyIncome
+        {
+            get { return _dailyIncome; }
+            set
+            {
+                _dailyIncome = value;
+                OnPropertyChanged("DailyIncome");
+            }
+        }
+
+        public List<QuestionStatus> NextDayMessages
+        {
+            get { return _nextDayMessages; }
+            set
+            {
+                _nextDayMessages = value;
+                OnPropertyChanged("NextDayMessages");
             }
         }
 

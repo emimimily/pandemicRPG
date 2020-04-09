@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Engine.Models;
 namespace Engine.Functions
 {
     public class GSFunctions
@@ -55,7 +55,8 @@ namespace Engine.Functions
                     date[0] = (Int32.Parse(date[0]) + 1).ToString();
                     date[1] = "0";
                 }
-            }
+            } 
+            
             return string.Join("/", date);
         }
 
@@ -92,7 +93,7 @@ namespace Engine.Functions
             }
             if (health == "Healthy")
             {
-                if (randomRoll <= 8) { newSeverity += 2; } //<=6
+                if (randomRoll <= 8) { newSeverity += 1; } //<=6
                 if (randomRoll <= 10 && randomRoll > 8) { newSeverity--; }
             }
             if (atHospital) { newSeverity--; }

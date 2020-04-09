@@ -36,6 +36,10 @@ namespace WPFUI
             DataContext = _gameSession;
 
         }
+        private void ISClick(object sender, RoutedEventArgs e)
+        {
+            _gameSession.CurrentPlayer.InfectionSeverity++;
+        }
         private void Button1Click(object sender, RoutedEventArgs e)
         { 
             switch (QuestionText.Text)
@@ -66,7 +70,7 @@ namespace WPFUI
                     _gameSession.WorkWashYes();
                     _gameSession.RaiseMessage("You shook hands with your sick boss today, but you washed your hands.");
                     break;
-                case "Your boss did not consider your excuse to be valid, so you were fired from your job.":
+                case "Your boss did not consider your excuse to be valid, so you were fired from your job and given your last paycheck.":
                     _gameSession.FiredOk();
                     Button1.Content = "Yes";
                     _gameSession.HasButton2 = true;
@@ -105,7 +109,7 @@ namespace WPFUI
                     Daughter.IsChecked = !Daughter.IsChecked;
                     Son.IsChecked = !Son.IsChecked;
                     break;
-                case "This morning you recieved an email-- due to concerns over the coronavirus, you may no longer go to work. You were laid off.":
+                case "This morning you recieved an email-- due to concerns over the coronavirus, you may no longer go to work. You were laid off and have recieved your last paycheck.":
                     _gameSession.SocialDistanceOk();
                     _gameSession.HasButton2 = true;
                     Button1.Content = "Yes";
@@ -115,7 +119,7 @@ namespace WPFUI
                     _gameSession.HasButton2 = true;
                     Button1.Content = "Yes";
                     break;
-                case "Do you want to go to the store? You should maintain social distancing.":
+                case "Do you want to go to the store? You should only go if necessary and maintain social distancing.":
                     _gameSession.StoreYes();
                     _gameSession.HasButton1 = false;
                     _gameSession.HasButton2 = true;
@@ -139,6 +143,8 @@ namespace WPFUI
                     break;
                 case "You feel extremely unwell. Do you want to go to the emergency room?":
                     _gameSession.EmergencyYes();
+                    Button1.Content = "Ok";
+                    _gameSession.HasButton2 = false;
                     break;
                 case "The hospital did not have enough tests to test you for the virus. You were instructed to go back home and self-quarantine.":
                     _gameSession.NotEnoughTests();
@@ -157,8 +163,7 @@ namespace WPFUI
                     break;
                 case "You were admitted to the hospital.":
                     _gameSession.AdmittedOk();
-                    //_gameSession.HasButton2 = true;
-                    //Button1.Content = "Yes";
+                    
                     break;
                 case "The hospital does not have enough ventilators to accomodate you.":
                     _gameSession.NotAdmittedOk();
@@ -167,12 +172,24 @@ namespace WPFUI
                     break;
                 case "You miserably spent your day in the hospital.":
                     _gameSession.HospitalMiserable();
+                    _gameSession.RaiseMessage("");
+                    _gameSession.RaiseMessage(_gameSession.CurrentDay.Date);
                     break;
                 case "You spent your day in the hospital. You feel slightly better, but lonely.":
                     _gameSession.HospitalBetter();
+                    _gameSession.RaiseMessage("");
+                    _gameSession.RaiseMessage(_gameSession.CurrentDay.Date);
                     break;
                 case "You have officially recovered from the coronavirus and may go home.":
                     _gameSession.HospitableRecovered();
+                    _gameSession.HasButton2 = true;
+                    Button1.Content = "Yes";
+                    break;
+                case "You were informed that today the city has been put in quarantine. You were laid off from your job and given your last paycheck.":
+                    _gameSession.HospitalQuarantineOk();
+                    break;
+                case "You were informed that today the city has been put in quarantine.":
+                    _gameSession.HospitalQuarantineOk();
                     break;
                 default:
                     break;
@@ -219,7 +236,14 @@ namespace WPFUI
                     {
                         _gameSession.BreadOk();
                         _gameSession.CurrentPlayer.Bread += Int16.Parse(txtNum.Text);
-                        _gameSession.CurrentPlayer.Money -= Int16.Parse(txtNum.Text) * 5;
+                        if (_gameSession.CurrentPlayer.Stage == "Crisis")
+                        {
+                            _gameSession.CurrentPlayer.Money -= Int16.Parse(txtNum.Text) * 10;
+                        }
+                        else
+                        {
+                            _gameSession.CurrentPlayer.Money -= Int16.Parse(txtNum.Text) * 5;
+                        }
                         txtNum.Text = "0";
                     }
                     else
@@ -232,7 +256,14 @@ namespace WPFUI
                     {
                         _gameSession.BreadOk();
                         _gameSession.CurrentPlayer.Bread += Int16.Parse(txtNum.Text);
-                        _gameSession.CurrentPlayer.Money -= Int16.Parse(txtNum.Text) * 5;
+                        if (_gameSession.CurrentPlayer.Stage == "Crisis")
+                        {
+                            _gameSession.CurrentPlayer.Money -= Int16.Parse(txtNum.Text) * 10;
+                        }
+                        else
+                        {
+                            _gameSession.CurrentPlayer.Money -= Int16.Parse(txtNum.Text) * 5;
+                        }
                         txtNum.Text = "0";
                     }
                     else
@@ -244,7 +275,14 @@ namespace WPFUI
                     if (_gameSession.CurrentPlayer.Money >= Int16.Parse(txtNum.Text) * 6)
                     {
                         _gameSession.CurrentPlayer.ToiletPaper += Int16.Parse(txtNum.Text);
-                        _gameSession.CurrentPlayer.Money -= Int16.Parse(txtNum.Text) * 6;
+                        if(_gameSession.CurrentPlayer.Stage == "Crisis")
+                        {
+                            _gameSession.CurrentPlayer.Money -= Int16.Parse(txtNum.Text) * 12;
+                        }
+                        else
+                        {
+                            _gameSession.CurrentPlayer.Money -= Int16.Parse(txtNum.Text) * 6;
+                        }
                         _gameSession.TPOk();
                         txtNum.Text = "0";
                         _gameSession.HasButton1 = true;
@@ -267,7 +305,14 @@ namespace WPFUI
                     {
                         _gameSession.TPOk();
                         _gameSession.CurrentPlayer.ToiletPaper += Int16.Parse(txtNum.Text);
-                        _gameSession.CurrentPlayer.Money -= Int16.Parse(txtNum.Text) * 6;
+                        if (_gameSession.CurrentPlayer.Stage == "Crisis")
+                        {
+                            _gameSession.CurrentPlayer.Money -= Int16.Parse(txtNum.Text) * 12;
+                        }
+                        else
+                        {
+                            _gameSession.CurrentPlayer.Money -= Int16.Parse(txtNum.Text) * 6;
+                        }
                         txtNum.Text = "0";
                         _gameSession.HasButton1 = true;
                         _gameSession.HasUpDown = false;
@@ -316,9 +361,11 @@ namespace WPFUI
                         _gameSession.CurrentPlayer.Bread -= membersEaten * .5;
 
                         _gameSession.DinnerOk();
-                        if (_gameSession.CurrentPlayer.City == "London" && _gameSession.CurrentDay.Date=="3/23/20") //quarantine message
+                        if (QuestionText.Text == "You should begin practicing social distancing due to concerns over the virus." 
+                            || QuestionText.Text == "This morning you recieved an email-- due to concerns over the coronavirus, you may no longer go to work. You were laid off."
+                            ||QuestionText.Text=="You passed away from the coronavirus."
+                            ||QuestionText.Text== "On the news this morning, they announced that the country is in a state of crisis. Hospitals are past their carrying capacity and stores are empty from panic buying.") //quarantine message
                         {
-
                             _gameSession.HasButton2 = false;
                             Button1.Content = "Ok";
                             Button2.Content = "No";
@@ -360,17 +407,22 @@ namespace WPFUI
                     if (Father.IsChecked == true) { membersEaten2++; }
                     if (Daughter.IsChecked == true) { membersEaten2++; }
                     if (Son.IsChecked == true) { membersEaten2++; }
-                    if (membersEaten2 <= _gameSession.CurrentPlayer.Bread*2)
+                    if (membersEaten2 <= _gameSession.CurrentPlayer.Bread * 2)
                     {
                         _gameSession.CurrentPlayer.Bread -= membersEaten2 * .5;
 
                         _gameSession.DinnerOk();
-                        if (_gameSession.CurrentPlayer.Stage == "Quarantine")
+                        if (QuestionText.Text == "You should begin practicing social distancing due to concerns over the virus."
+                            || QuestionText.Text == "This morning you recieved an email-- due to concerns over the coronavirus, you may no longer go to work. You were laid off."
+                            || QuestionText.Text == "You passed away from the coronavirus."
+                            || QuestionText.Text == "On the news this morning, they announced that the country is in a state of crisis. Hospitals are past their carrying capacity and stores are empty from panic buying.") //quarantine message
                         {
                             _gameSession.HasButton2 = false;
                             Button1.Content = "Ok";
                             Button2.Content = "No";
-                        } else
+
+                        }
+                        else
                         {
                             Button1.Content = "Yes";
                             Button2.Content = "No";
@@ -397,7 +449,7 @@ namespace WPFUI
                         _gameSession.DinnerBread();
                     }
                     break;
-                case "Do you want to go to the store? You should maintain social distancing.":
+                case "Do you want to go to the store? You should only go if necessary and maintain social distancing.":
                     _gameSession.StoreNo();
                     if (QuestionText.Text == "Who will eat dinner today?")
                     {
@@ -453,9 +505,26 @@ namespace WPFUI
 
         private void cmdUp_Click(object sender, RoutedEventArgs e)
         {
-            if(NumValue < 20)
+            if (_gameSession.CurrentPlayer.Stage == "Crisis")
             {
-                NumValue++;
+                if (NumValue < 2)
+                {
+                    NumValue++;
+                }
+            }
+            if(_gameSession.CurrentPlayer.Stage == "Quarantine")
+            {
+                if (NumValue < 5)
+                {
+                    NumValue++;
+                }
+            }
+            if(_gameSession.CurrentPlayer.Stage == "Regular")
+            {
+                if (NumValue < 20)
+                {
+                    NumValue++;
+                }
             }
         }
 

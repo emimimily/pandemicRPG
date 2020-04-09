@@ -111,6 +111,7 @@
             <Border Grid.Row="1" Grid.Column="1"
                     BorderBrush="Gainsboro"
                     BorderThickness="1">
+                <Button Content="Add IS" x:Name="IS" Click="ISClick"/>
 
                 <!--<Grid>
                     <Grid.RowDefinitions>
@@ -380,8 +381,6 @@
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"
                       Visibility="{Binding HasCheckSon, Converter={StaticResource BooleanToVisibility}}">Son</CheckBox>
-
-
         </Grid>
 
     </Grid>

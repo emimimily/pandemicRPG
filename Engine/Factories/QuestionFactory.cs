@@ -33,7 +33,7 @@ namespace Engine.Factories
                 "Do you want to go to the store?");
 
             newQuestion.AddStatus("Home", "Any", "Regular", "Any", "Any", "No", 1,
-                "Your boss did not consider your excuse to be valid, so you were fired from your job.");
+                "Your boss did not consider your excuse to be valid, so you were fired from your job and given your last paycheck."); //changed
 
             newQuestion.AddStatus("Store", "Any", "Any", "Any", "Any", "Any", 1,
                 "How much bread do you want to buy?"); 
@@ -61,15 +61,15 @@ namespace Engine.Factories
 
             //STAGE 2/QUARANTINE
             newQuestion.AddStatus("Home", "Any", "Quarantine", "Any", "Any", "Yes", 1,
-                "This morning you recieved an email-- due to concerns over the coronavirus, you may no longer go to work. You were laid off.");
+                "This morning you recieved an email-- due to concerns over the coronavirus, you may no longer go to work. You were laid off and have recieved your last paycheck."); //changed 
             newQuestion.AddStatus("Home", "Any", "Quarantine", "Any", "Any", "Yes", 2,
                 "You should begin practicing social distancing due to concerns over the virus.");
             newQuestion.AddStatus("Home", "Any", "Quarantine", "Any", "Any", "Any", 3,
-                "Do you want to go to the store? You should maintain social distancing.");
+                "Do you want to go to the store? You should only go if necessary and maintain social distancing.");
 
             //STAGE 3/CRISIS
-            newQuestion.AddStatus("Home", "Any", "Quarantine", "Any", "Any", "Yes", 1,
-                "On the news this morning, they announced the ...");
+            newQuestion.AddStatus("Home", "Any", "Crisis", "Any", "Any", "Yes", 1,
+                "On the news this morning, they announced that the country is in a state of crisis. Hospitals are past their carrying capacity and stores are empty from panic buying.");
 
             //INFECTION SEVERITY
             newQuestion.AddStatus("Home", "Any", "Any", "Any", "16", "Any", 1,
@@ -115,6 +115,13 @@ namespace Engine.Factories
                 "You spent your day in the hospital. You feel slightly better, but lonely.");
             newQuestion.AddStatus("Hospital", "Any", "Any", "Any", "Any", "Any", 3,
                 "You have officially recovered from the coronavirus and may go home.");
+
+            newQuestion.AddStatus("Hospital", "Any", "Any", "Any", "Any", "Yes", 1,
+                "You were informed that today the city has been put in quarantine. You were laid off from your job and given your last paycheck."); //changed
+
+            newQuestion.AddStatus("Hospital", "Any", "Any", "Any", "Any", "No", 1,
+                "You were informed that today the city has been put in quarantine.");
+
             return newQuestion;
            
         }
