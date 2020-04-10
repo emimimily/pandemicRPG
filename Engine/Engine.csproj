@@ -44,11 +44,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventArgs\UpdateMessageEventArgs.cs" />
     <Compile Include="EventArgs\GameMessageEventArgs.cs" />
+    <Compile Include="Factories\UpdateFactory.cs" />
     <Compile Include="Factories\ItemFactory.cs" />
     <Compile Include="Factories\QuestionFactory.cs" />
     <Compile Include="Factories\WorldFactory.cs" />
     <Compile Include="Functions\GSFunctions.cs" />
+    <Compile Include="Models\Updates.cs" />
+    <Compile Include="Models\DailyUpdate.cs" />
     <Compile Include="Models\Day.cs" />
     <Compile Include="Models\GameItem.cs" />
     <Compile Include="Models\FamilyHealth.cs" />

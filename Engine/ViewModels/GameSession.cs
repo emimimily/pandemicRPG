@@ -14,12 +14,15 @@ namespace Engine.ViewModels
     public class GameSession : INotifyPropertyChanged
     {
         public event EventHandler<GameMessageEventArgs> OnMessageRaised;
-
+        public event EventHandler<UpdateMessageEventArgs> OnUpdateRaised;
+        #region Properties
         #region Properties
 
         private Location _currentLocation;
         private QuestionStatus _currentQuestionStatus;
         private Question _currentQuestion;
+        private DailyUpdate _currentDailyUpdate;
+        private Updates _currentUpdates;
 
         private bool _hasButton2 = true;
         private bool _hasButton1 = true;
@@ -60,6 +63,25 @@ namespace Engine.ViewModels
             {
                 _currentQuestion = value;
                 OnPropertyChanged("CurrentQuestion");
+            }
+        }
+
+        public Updates CurrentUpdates
+        {
+            get { return _currentUpdates; }
+            set
+            {
+                _currentUpdates = value;
+                OnPropertyChanged("Updates");
+            }
+        }
+        public DailyUpdate CurrentDailyUpdate
+        {
+            get { return _currentDailyUpdate; }
+            set
+            {
+                _currentDailyUpdate = value;
+                OnPropertyChanged("CurrentDailyUpdate");
             }
         }
 
@@ -156,6 +178,7 @@ namespace Engine.ViewModels
         GSFunctions gsf = new GSFunctions();
 
         #endregion
+        #endregion
 
         public GameSession()
         {
@@ -189,6 +212,11 @@ namespace Engine.ViewModels
             CurrentQuestion = qfactory.CreateQuestion();
 
             CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "None", "Regular", "Any", "Any", "Yes", 1);
+
+            UpdateFactory ufactory = new UpdateFactory();
+            CurrentUpdates = ufactory.CreateUpdate();
+            
+            
 
             CurrentFamilyHealth = new FamilyHealth
             {
@@ -251,6 +279,7 @@ namespace Engine.ViewModels
             CurrentLocation = CurrentWorld.LocationAt(3, 0);
             CurrentPlayer.City = "London";
             CurrentPlayer.DailyIncome = 96;
+            CurrentDailyUpdate = CurrentUpdates.UpdateAt("London", 1);
 
         }
         public void CityLosAngeles()
@@ -261,6 +290,7 @@ namespace Engine.ViewModels
             CurrentLocation = CurrentWorld.LocationAt(-3, 0);
             CurrentPlayer.City = "Los Angeles";
             CurrentPlayer.DailyIncome = 168;
+            CurrentDailyUpdate = CurrentUpdates.UpdateAt("Los Angeles", 1);
         }
         public void CityWuhan()
         {
@@ -270,6 +300,7 @@ namespace Engine.ViewModels
             CurrentLocation = CurrentWorld.LocationAt(3, -2);
             CurrentPlayer.City = "Wuhan";
             CurrentPlayer.DailyIncome = 24;
+            CurrentDailyUpdate = CurrentUpdates.UpdateAt("Wuhan", 1);
 
         }
         public void CityNewYork()
@@ -280,6 +311,10 @@ namespace Engine.ViewModels
             CurrentLocation = CurrentWorld.LocationAt(0, 0);
             CurrentPlayer.City = "New York City";
             CurrentPlayer.DailyIncome = 96;
+            CurrentDailyUpdate = CurrentUpdates.UpdateAt("New York City", 1);
+            RaiseUpdate(CurrentDay.Date);
+            RaiseUpdate(CurrentDailyUpdate.CaseUpdate);
+            
         }
         public void WorkYes() //1
         {
@@ -619,6 +654,10 @@ namespace Engine.ViewModels
             //CurrentQuestionStatus = CurrentPlayer.NextDayMessages[0];
             //CurrentPlayer.NextDayMessages.RemoveAt(0);
             CurrentDay.Date = gsf.nextDay(CurrentDay.Date);
+            CurrentDailyUpdate = CurrentUpdates.UpdateAt(CurrentPlayer.City, CurrentDailyUpdate.Index+1);
+            RaiseUpdate(CurrentDay.Date);
+            RaiseUpdate(CurrentDailyUpdate.CaseUpdate);
+
             CurrentPlayer.DaysSinceStart++;
             if(CurrentPlayer.Stage!="Regular" && CurrentPlayer.City == "London" && CurrentPlayer.Job!="None")
             {
@@ -934,6 +973,9 @@ namespace Engine.ViewModels
         {
             CurrentPlayer.NextDayMessages.Clear();
             CurrentDay.Date = gsf.nextDay(CurrentDay.Date);
+            CurrentDailyUpdate = CurrentUpdates.UpdateAt(CurrentPlayer.City, CurrentDailyUpdate.Index+1);
+            RaiseUpdate(CurrentDay.Date);
+            RaiseUpdate(CurrentDailyUpdate.CaseUpdate);
             CurrentPlayer.DaysSinceStart++;
             if (CurrentPlayer.Stage != "Regular" && CurrentPlayer.City == "London" && CurrentPlayer.Job != "None")
             {
@@ -1016,6 +1058,9 @@ namespace Engine.ViewModels
         {
             CurrentPlayer.NextDayMessages.Clear();
             CurrentDay.Date = gsf.nextDay(CurrentDay.Date);
+            CurrentDailyUpdate = CurrentUpdates.UpdateAt(CurrentPlayer.City, CurrentDailyUpdate.Index+1);
+            RaiseUpdate(CurrentDay.Date);
+            RaiseUpdate(CurrentDailyUpdate.CaseUpdate);
             CurrentPlayer.DaysSinceStart++;
             if (CurrentPlayer.Stage != "Regular" && CurrentPlayer.City == "London" && CurrentPlayer.Job != "None")
             {
@@ -1159,6 +1204,13 @@ namespace Engine.ViewModels
             CurrentFamilyHealth.DadAlive = Living[3];
             CurrentFamilyHealth.DaughterAlive = Living[4];
             CurrentFamilyHealth.SonAlive = Living[5];
+            //3.5. update infections2
+            Infections = gsf.updateInfections2(Infections);
+            CurrentFamilyHealth.SpouseInfected = Infections[1];
+            CurrentFamilyHealth.MomInfected = Infections[2];
+            CurrentFamilyHealth.DadInfected = Infections[3];
+            CurrentFamilyHealth.DaughterInfected = Infections[4];
+            CurrentFamilyHealth.SonInfected = Infections[5];
             //4. update images
             Images = gsf.updateImages(Images, Living, Infections);
             CurrentFamilyHealth.CharacterImage = Images[0];
@@ -1225,7 +1277,6 @@ namespace Engine.ViewModels
 
             CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "None", "Regular", "Any", "Any", "Yes", 1);
         }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
@@ -1238,6 +1289,10 @@ namespace Engine.ViewModels
             OnMessageRaised?.Invoke(this, new GameMessageEventArgs(message));
         }
 
+        public void RaiseUpdate(string update)
+        {
+            OnUpdateRaised?.Invoke(this, new UpdateMessageEventArgs(update));
+        }
 
     }
 }

@@ -33,6 +33,8 @@ namespace WPFUI
 
             _gameSession.OnMessageRaised += OnGameMessageRaised;
 
+            _gameSession.OnUpdateRaised += OnUpdateMessageRaised;
+
             DataContext = _gameSession;
 
         }
@@ -238,11 +240,15 @@ namespace WPFUI
                     _gameSession.CityLosAngeles();
                     Button1.Content = "Yes";
                     Button2.Content = "No";
+                    _gameSession.RaiseMessage(_gameSession.CurrentDay.Date);
+                    _gameSession.RaiseMessage("You live in Los Angeles, California, as a banker. ");
                     break;
                 case "Which hard mode city do you want to play in?":
                     _gameSession.CityNewYork();
                     Button1.Content = "Yes";
                     Button2.Content = "No";
+                    _gameSession.RaiseMessage(_gameSession.CurrentDay.Date);
+                    _gameSession.RaiseMessage("You live in New York City, New York, as a banker. ");
                     break;
                 case "Do you want to go to work?":
                     _gameSession.WorkNo();
@@ -603,6 +609,11 @@ namespace WPFUI
             GameMessages.ScrollToEnd();
         }
 
+        private void OnUpdateMessageRaised(object sender, UpdateMessageEventArgs e)
+        {
+            UpdateMessages.Document.Blocks.Add(new Paragraph(new Run(e.Update)));
+            UpdateMessages.ScrollToEnd();
+        }
         private int _numValue = 0;
 
         public int NumValue
