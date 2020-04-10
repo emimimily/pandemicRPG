@@ -139,5 +139,155 @@ namespace Engine.Functions
             }
             return ventilator;
         }
+
+        public List<int> updateHealths(List<int> currentHealths, List<bool> currentInfections, bool obese)
+        { //0. player, 1. spouse, 2. mom, 3. dad, 4. daughter, 5. son
+            List<int> newHealths = currentHealths;
+            for(int i=0; i<currentHealths.Count; i++)
+            {
+                if (currentHealths[i] == 0) { continue; }
+                if (currentInfections[i] == true)
+                {
+                    Random rnd = new Random();
+                    int randomRoll = rnd.Next(1, 11);
+                    if ((i == 0 && obese==true) || i == 2 || i == 3 || i == 5) //unhealthy people: obese char, mom, dad, baby son
+                    {
+                        if (randomRoll >= 5) //if the random roll is 5 or more (50%)
+                        {
+                            newHealths[i] -= randomRoll * 2;
+                            if(newHealths[i]<0) { newHealths[i] = 0; }
+                        }
+                    }
+
+                    if((i==0 && obese==false) || i==1 || i == 4) //healthy: healthy char, spouse, daughter
+                    {
+                        if (randomRoll >= 9)
+                        {
+                            newHealths[i] -= randomRoll;
+                            if (newHealths[i] < 0) { newHealths[i] = 0; }
+                        }
+                    }
+                }
+            }
+            return newHealths;
+        }
+
+        public List<bool> updateInfections(List<bool> currentInfections)
+        {
+            Random rnd = new Random();
+            List<bool> newInfections = currentInfections;
+            for (int i = 1; i < currentInfections.Count; i++) //excludes the character
+            {
+                int randomRoll = rnd.Next(1, 11);
+                if (randomRoll >= 5) //50% chance to get infected
+                {
+                    newInfections[i] = true;
+                }
+            }
+            return newInfections;
+        }
+        public List<bool> updateAlive(List<int> currentHealths, List<bool> currentAlive)
+        {
+            List<bool> newAlive = currentAlive;
+            for(int i=0; i<currentAlive.Count; i++)
+            {
+                if (currentHealths[i] <= 0)
+                {
+                    newAlive[i] = false;
+                }
+                else
+                {
+                    newAlive[i] = true;
+                }
+            }
+            return newAlive;
+        }
+        public List<string> updateImages(List<string> currentImages, List<bool> currentAlive, List<bool> currentInfections)
+        {
+            List<string> newImages = currentImages;
+            for (int i = 0; i < currentImages.Count; i++)
+            {
+                if (currentAlive[i] == false) //if they died
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            newImages[i] = "/Engine;component/Images/Family/dead_character.png";
+                            break;
+                        case 1:
+                            newImages[i]= "/Engine;component/Images/Family/dead_spouse.png";
+                            break;
+                        case 2:
+                            newImages[i] = "/Engine;component/Images/Family/dead_mom.png";
+                            break;
+                        case 3:
+                            newImages[i] = "/Engine;component/Images/Family/dead_dad.png";
+                            break;
+                        case 4:
+                            newImages[i] = "/Engine;component/Images/Family/dead_daughter.png";
+                            break;
+                        case 5:
+                            newImages[i] = "/Engine;component/Images/Family/dead_son.png";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            newImages[i] = "/Engine;component/Images/Family/player.png";
+                            break;
+                        case 1:
+                            newImages[i] = "/Engine;component/Images/Family/spouse.png";
+                            break;
+                        case 2:
+                            newImages[i] = "/Engine;component/Images/Family/mom.png";
+                            break;
+                        case 3:
+                            newImages[i] = "/Engine;component/Images/Family/dad.png";
+                            break;
+                        case 4:
+                            newImages[i] = "/Engine;component/Images/Family/daughter.png";
+                            break;
+                        case 5:
+                            newImages[i] = "/Engine;component/Images/Family/son.png";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if (currentInfections[i] == true && currentAlive[i]==true)
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            newImages[i] = "/Engine;component/Images/Family/infect_player.png";
+                            break;
+                        case 1:
+                            newImages[i] = "/Engine;component/Images/Family/infect_spouse.png";
+                            break;
+                        case 2:
+                            newImages[i] = "/Engine;component/Images/Family/infect_mom.png";
+                            break;
+                        case 3:
+                            newImages[i] = "/Engine;component/Images/Family/infect_dad.png";
+                            break;
+                        case 4:
+                            newImages[i] = "/Engine;component/Images/Family/infect_daughter.png";
+                            break;
+                        case 5:
+                            newImages[i] = "/Engine;component/Images/Family/infect_son.png";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            return newImages;
+        }
+
     }
 }

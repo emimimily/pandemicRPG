@@ -59,6 +59,9 @@ namespace Engine.Factories
             newQuestion.AddStatus("Home", "Any", "Any", "Any", "Any", "Any", 5,
                 "Who will eat dinner today? \n You do not have enough bread. Select less family members.");
 
+            newQuestion.AddStatus("Home", "Any", "Any", "Any", "Any", "Any", 6,
+                "You died from starvation.");
+
             //STAGE 2/QUARANTINE
             newQuestion.AddStatus("Home", "Any", "Quarantine", "Any", "Any", "Yes", 1,
                 "This morning you recieved an email-- due to concerns over the coronavirus, you may no longer go to work. You were laid off and have recieved your last paycheck."); //changed 

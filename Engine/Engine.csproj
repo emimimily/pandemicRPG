@@ -102,5 +102,21 @@
   <ItemGroup>
     <Resource Include="Images\Diagrams\blank_map.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Family\dead_character.png" />
+    <Resource Include="Images\Family\dead_dad.png" />
+    <Resource Include="Images\Family\dead_daughter.png" />
+    <Resource Include="Images\Family\dead_mom.png" />
+    <Resource Include="Images\Family\dead_son.png" />
+    <Resource Include="Images\Family\dead_spouse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Family\infect_dad.png" />
+    <Resource Include="Images\Family\infect_daughter.png" />
+    <Resource Include="Images\Family\infect_mom.png" />
+    <Resource Include="Images\Family\infect_player.png" />
+    <Resource Include="Images\Family\infect_son.png" />
+    <Resource Include="Images\Family\infect_spouse.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

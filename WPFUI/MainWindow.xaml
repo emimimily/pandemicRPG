@@ -202,27 +202,27 @@
                         <Label Grid.Row="0" Grid.Column="1" Content="Name" BorderBrush="Black" BorderThickness="0 0 0 .5"/>
                         <Label Grid.Row="0" Grid.Column="2" Content="Health" BorderBrush="Black" BorderThickness="0 0 0 .5"/>
 
-                        <Image Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Source="/Engine;component/Images/Family/player.png" Width="40" Height="40" />
+                        <Image Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Source="{Binding CurrentFamilyHealth.CharacterImage}" Width="40" Height="40" />
                         <Label Grid.Row="1" Grid.Column="1" Content="You:"/>
                         <Label Grid.Row="1" Grid.Column="2" Content="{Binding CurrentFamilyHealth.CharacterHealth}"/>
 
-                        <Image Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Source="/Engine;component/Images/Family/spouse.png" Width="40" Height="40" />
+                        <Image Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Source="{Binding CurrentFamilyHealth.SpouseImage}" Width="40" Height="40" />
                         <Label Grid.Row="2" Grid.Column="1" Content="Spouse:"/>
                         <Label Grid.Row="2" Grid.Column="2" Content="{Binding CurrentFamilyHealth.SpouseHealth}"/>
 
-                        <Image Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Source="/Engine;component/Images/Family/mom.png" Width="40" Height="40" />
+                        <Image Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Source="{Binding CurrentFamilyHealth.MomImage}" Width="40" Height="40" />
                         <Label Grid.Row="3" Grid.Column="1" Content="Mother:"/>
                         <Label Grid.Row="3" Grid.Column="2" Content="{Binding CurrentFamilyHealth.MomHealth}"/>
 
-                        <Image Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Source="/Engine;component/Images/Family/dad.png" Width="40" Height="40" />
+                        <Image Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Source="{Binding CurrentFamilyHealth.DadImage}" Width="40" Height="40" />
                         <Label Grid.Row="4" Grid.Column="1" Content="Father:"/>
                         <Label Grid.Row="4" Grid.Column="2" Content="{Binding CurrentFamilyHealth.DadHealth}"/>
 
-                        <Image Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" Source="/Engine;component/Images/Family/daughter.png" Width="40" Height="40" />
+                        <Image Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" Source="{Binding CurrentFamilyHealth.DaughterImage}" Width="40" Height="40" />
                         <Label Grid.Row="5" Grid.Column="1" Content="Daughter:"/>
                         <Label Grid.Row="5" Grid.Column="2" Content="{Binding CurrentFamilyHealth.DaughterHealth}"/>
 
-                        <Image Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" Source="/Engine;component/Images/Family/son.png" Width="40" Height="40" />
+                        <Image Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" Source="{Binding CurrentFamilyHealth.SonImage}" Width="40" Height="40" />
                         <Label Grid.Row="6" Grid.Column="1" Content="Son:"/>
                         <Label Grid.Row="6" Grid.Column="2" Content="{Binding CurrentFamilyHealth.SonHealth}"/>
 
@@ -268,13 +268,8 @@
                         <Label Grid.Row="5" Grid.Column="1" Content="{Binding CurrentPlayer.InfectionSeverity}"/>
                         <Label Grid.Row="6" Grid.Column="0" Content="Tested:"/>
                         <Label Grid.Row="6" Grid.Column="1" Content="{Binding CurrentPlayer.Tested}"/>
-                        <Label Grid.Row="7" Grid.Column="0" Content="DST:"/>
-                        <Label Grid.Row="7" Grid.Column="1" Content="{Binding CurrentPlayer.DaysSinceTested}"/>
-
-
-
-
-
+                        <Label Grid.Row="7" Grid.Column="0" Content="Karma:"/>
+                        <Label Grid.Row="7" Grid.Column="1" Content="{Binding CurrentPlayer.Karma}"/>
                     </Grid>
                 </TabItem>
             </TabControl>

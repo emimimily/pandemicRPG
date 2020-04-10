@@ -27,6 +27,7 @@ namespace Engine.Models
         private bool _hospitalized;
         private int _daysSinceStart;
         private int _dailyIncome;
+        private int _karma;
 
         private List<QuestionStatus> _nextDayMessages;
 
@@ -219,6 +220,16 @@ namespace Engine.Models
             {
                 _nextDayMessages = value;
                 OnPropertyChanged("NextDayMessages");
+            }
+        }
+
+        public int Karma
+        {
+            get { return _karma; }
+            set
+            {
+                _karma = value;
+                OnPropertyChanged("Karma");
             }
         }
 

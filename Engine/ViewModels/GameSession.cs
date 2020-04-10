@@ -175,7 +175,8 @@ namespace Engine.ViewModels
                 DaysSinceTested = 0,
                 Tested = false,
                 Hospitalized=false,
-                DaysSinceStart=0
+                DaysSinceStart=0,
+                Karma=50
                 
             };
 
@@ -195,7 +196,28 @@ namespace Engine.ViewModels
                 DadHealth = 62,
                 SpouseHealth = 95,
                 DaughterHealth = 90,
-                SonHealth = 90
+                SonHealth = 90,
+
+                CharacterInfected = false,
+                MomInfected = false,
+                DadInfected = false,
+                SpouseInfected = false,
+                DaughterInfected = false,
+                SonInfected = false,
+
+                CharacterAlive = true,
+                MomAlive = true,
+                DadAlive = true,
+                SpouseAlive = true,
+                DaughterAlive = true,
+                SonAlive = true,
+
+                CharacterImage = "/Engine;component/Images/Family/player.png",
+                MomImage="/Engine;component/Images/Family/mom.png",
+                DadImage= "/Engine;component/Images/Family/dad.png",
+                SpouseImage ="/Engine;component/Images/Family/spouse.png",
+                DaughterImage= "/Engine;component/Images/Family/daughter.png",
+                SonImage = "/Engine;component/Images/Family/son.png" 
             };
 
             CurrentDay = new Day();
@@ -263,8 +285,13 @@ namespace Engine.ViewModels
             //CurrentPlayer.NextDayMessages.RemoveAt(0);
             CurrentQuestionStatus = CurrentQuestion.StatusAt("Work", "Any", "Regular", "Any", "Any", "Any", gsf.randomNumber(0, 2, 2)); //index, %, possible
             CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1);
-            CurrentPlayer.InfectionChance = 1; //.1
+            CurrentPlayer.InfectionChance = .1-(CurrentPlayer.Karma/2000); //.1
             CurrentPlayer.InfectionSeverity = gsf.infection(CurrentPlayer.InfectionChance, CurrentPlayer.InfectionSeverity, false);
+            if (CurrentPlayer.InfectionSeverity >=1)
+            {
+                CurrentFamilyHealth.CharacterInfected = true;
+                CurrentFamilyHealth.CharacterImage = "/Engine;component/Images/Family/infect_player.png";
+            }
         }
         public void WorkNo() //1
         {
@@ -278,23 +305,45 @@ namespace Engine.ViewModels
                 CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Regular", "Any", "Any", "No", 1);
             }
             CurrentPlayer.InfectionSeverity = gsf.infection(CurrentPlayer.InfectionChance, CurrentPlayer.InfectionSeverity, false);
+            if (CurrentPlayer.InfectionSeverity >= 1)
+            {
+                CurrentFamilyHealth.CharacterInfected = true;
+                CurrentFamilyHealth.CharacterImage = "/Engine;component/Images/Family/infect_player.png";
+            }
         }
         public void WorkWashYes()
         {
             CurrentQuestionStatus = CurrentQuestion.StatusAt("Work", "Any", "Regular", "Any", "Any", "Any", 2);
             CurrentPlayer.InfectionSeverity = gsf.infection(CurrentPlayer.InfectionChance, CurrentPlayer.InfectionSeverity, true);
+            if (CurrentPlayer.InfectionSeverity >= 1)
+            {
+                CurrentFamilyHealth.CharacterInfected = true;
+                CurrentFamilyHealth.CharacterImage = "/Engine;component/Images/Family/infect_player.png";
+            }
+            if (CurrentPlayer.Karma <= 95) { CurrentPlayer.Karma += 5; }
         }
         public void WorkWashNo()
         {
             CurrentQuestionStatus = CurrentQuestion.StatusAt("Work", "Any", "Regular", "Any", "Any", "Any", 2);
-            CurrentPlayer.InfectionChance += .2;
+            CurrentPlayer.InfectionChance += .2 - (CurrentPlayer.Karma / 2000);
             CurrentPlayer.InfectionSeverity = gsf.infection(CurrentPlayer.InfectionChance, CurrentPlayer.InfectionSeverity, false);
+            if (CurrentPlayer.InfectionSeverity >= 1)
+            {
+                CurrentFamilyHealth.CharacterInfected = true;
+                CurrentFamilyHealth.CharacterImage = "/Engine;component/Images/Family/infect_player.png";
+            }
+            if (CurrentPlayer.Karma >= 5) { CurrentPlayer.Karma -= 5; }
         }
         public void FiredOk()
         {
             CurrentPlayer.Job = "None";
             CurrentQuestionStatus = CurrentQuestion.StatusAt("Work", "Any", "Regular", "Any", "Any", "Any", 2);
             CurrentPlayer.InfectionSeverity = gsf.infection(CurrentPlayer.InfectionChance, CurrentPlayer.InfectionSeverity, false);
+            if (CurrentPlayer.InfectionSeverity >= 1)
+            {
+                CurrentFamilyHealth.CharacterInfected = true;
+                CurrentFamilyHealth.CharacterImage = "/Engine;component/Images/Family/infect_player.png";
+            }
             CurrentPlayer.Money += CurrentPlayer.DailyIncome * CurrentPlayer.DaysSinceStart;
         }
         public void StoreYes()
@@ -302,11 +351,17 @@ namespace Engine.ViewModels
             //CurrentPlayer.NextDayMessages.RemoveAt(0);
             if (CurrentPlayer.Stage == "Regular")
             {
-                CurrentPlayer.InfectionChance += 1; //.1
+                CurrentPlayer.InfectionChance += .1 - (CurrentPlayer.Karma / 2000); //.1
+            }
+            else if(CurrentPlayer.Stage=="Quarantine")
+            {
+                CurrentPlayer.InfectionChance += .15 - (CurrentPlayer.Karma / 2000); //.15
+                if (CurrentPlayer.Karma >= 5) { CurrentPlayer.Karma -= 5; }
             }
             else
             {
-                CurrentPlayer.InfectionChance += 1; //.15
+                CurrentPlayer.InfectionChance += .20 - (CurrentPlayer.Karma / 2000); //.20
+                if (CurrentPlayer.Karma >= 10) { CurrentPlayer.Karma -= 10; }
             }
             CurrentQuestionStatus = CurrentQuestion.StatusAt("Store", "Any", "Any", "Any", "Any", "Any", 1);
             if (CurrentLocation.Name == "Work") { CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate - 1); }
@@ -315,6 +370,11 @@ namespace Engine.ViewModels
                 CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate);
             }
             CurrentPlayer.InfectionSeverity = gsf.infection(CurrentPlayer.InfectionChance, CurrentPlayer.InfectionSeverity, false);
+            if (CurrentPlayer.InfectionSeverity >= 1)
+            {
+                CurrentFamilyHealth.CharacterInfected = true;
+                CurrentFamilyHealth.CharacterImage = "/Engine;component/Images/Family/infect_player.png";
+            }
         }
         public void StoreNo()
         {
@@ -343,11 +403,21 @@ namespace Engine.ViewModels
                 }
             }
             CurrentPlayer.InfectionSeverity = gsf.infection(CurrentPlayer.InfectionChance, CurrentPlayer.InfectionSeverity, false);
+            if (CurrentPlayer.InfectionSeverity >= 1)
+            {
+                CurrentFamilyHealth.CharacterInfected = true;
+                CurrentFamilyHealth.CharacterImage = "/Engine;component/Images/Family/infect_player.png";
+            }
         }
         public void BreadOk()
         {
             CurrentQuestionStatus = CurrentQuestion.StatusAt("Store", "Any", "Any", "Any", "Any", "Any", 2);
             CurrentPlayer.InfectionSeverity = gsf.infection(CurrentPlayer.InfectionChance, CurrentPlayer.InfectionSeverity, false);
+            if (CurrentPlayer.InfectionSeverity >= 1)
+            {
+                CurrentFamilyHealth.CharacterInfected = true;
+                CurrentFamilyHealth.CharacterImage = "/Engine;component/Images/Family/infect_player.png";
+            }
         }
         public void BreadMoney()
         {
@@ -358,7 +428,7 @@ namespace Engine.ViewModels
             if (CurrentPlayer.ToiletPaper >= .1m)
             {
                 CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "Any", "Any", gsf.randomNumber(1, 1, 2));
-                CurrentPlayer.InfectionChance = .1;
+                CurrentPlayer.InfectionChance = .1 - (CurrentPlayer.Karma / 2000);
                 CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate);
             }
             else
@@ -367,13 +437,13 @@ namespace Engine.ViewModels
                 if (index == 2)
                 {
                     CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "Any", "Any", index);
-                    CurrentPlayer.InfectionChance = .1;
+                    CurrentPlayer.InfectionChance = .1 - (CurrentPlayer.Karma / 2000);
                     CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate);
                 }
                 else if (index == 3)
                 {
                     CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate);
-                    CurrentPlayer.InfectionChance = .1;
+                    CurrentPlayer.InfectionChance = .1 - (CurrentPlayer.Karma / 2000);
                     CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "Any", "Any", index + 1);
                     HasCheckMe = true;
                     HasCheckSpouse = true;
@@ -385,6 +455,11 @@ namespace Engine.ViewModels
                 }
             }
             CurrentPlayer.InfectionSeverity = gsf.infection(CurrentPlayer.InfectionChance, CurrentPlayer.InfectionSeverity, false);
+            if (CurrentPlayer.InfectionSeverity >= 1)
+            {
+                CurrentFamilyHealth.CharacterInfected = true;
+                CurrentFamilyHealth.CharacterImage = "/Engine;component/Images/Family/infect_player.png";
+            }
         }
         public void TPMoney()
         {
@@ -394,11 +469,18 @@ namespace Engine.ViewModels
         {
             if (CurrentPlayer.Stage == "Regular")
             {
-                CurrentPlayer.InfectionChance += .1;
+                CurrentPlayer.InfectionChance += .1 - (CurrentPlayer.Karma / 2000);
+                if (CurrentPlayer.Karma >= 5) { CurrentPlayer.Karma -= 5; }
+            }
+            else if(CurrentPlayer.Stage=="Quarantine")
+            {
+                CurrentPlayer.InfectionChance += .3 - (CurrentPlayer.Karma / 2000);
+                if (CurrentPlayer.Karma >= 20) { CurrentPlayer.Karma -= 20; }
             }
             else
             {
-                CurrentPlayer.InfectionChance += .3;
+                CurrentPlayer.InfectionChance += .5 - (CurrentPlayer.Karma / 2000);
+                if (CurrentPlayer.Karma >= 50) { CurrentPlayer.Karma -= 50; }
             }
             if (CurrentPlayer.ToiletPaper >= .1m)
             {
@@ -415,6 +497,11 @@ namespace Engine.ViewModels
                 HasCheckSon = true;
             }
             CurrentPlayer.InfectionSeverity = gsf.infection(CurrentPlayer.InfectionChance, CurrentPlayer.InfectionSeverity, false);
+            if (CurrentPlayer.InfectionSeverity >= 1)
+            {
+                CurrentFamilyHealth.CharacterInfected = true;
+                CurrentFamilyHealth.CharacterImage = "/Engine;component/Images/Family/infect_player.png";
+            }
         }
         public void PartyNo()
         {
@@ -433,17 +520,29 @@ namespace Engine.ViewModels
                 HasCheckSon = true;
             }
             CurrentPlayer.InfectionSeverity = gsf.infection(CurrentPlayer.InfectionChance, CurrentPlayer.InfectionSeverity, false);
+            if (CurrentPlayer.InfectionSeverity >= 1)
+            {
+                CurrentFamilyHealth.CharacterInfected = true;
+                CurrentFamilyHealth.CharacterImage = "/Engine;component/Images/Family/infect_player.png";
+            }
         }
         public void HomeWashYes()
         {
+            if (CurrentPlayer.Karma <= 95) { CurrentPlayer.Karma += 5; }
             CurrentPlayer.InfectionChance = 0;
             CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "Any", "Any", 4);
             CurrentPlayer.InfectionSeverity = gsf.infection(CurrentPlayer.InfectionChance, CurrentPlayer.InfectionSeverity, true);
         }
         public void HomeWashNo()
         {
+            if (CurrentPlayer.Karma >= 5) { CurrentPlayer.Karma -= 5; }
             CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "Any", "Any", 4);
             CurrentPlayer.InfectionSeverity = gsf.infection(CurrentPlayer.InfectionChance, CurrentPlayer.InfectionSeverity, false);
+            if (CurrentPlayer.InfectionSeverity >= 1)
+            {
+                CurrentFamilyHealth.CharacterInfected = true;
+                CurrentFamilyHealth.CharacterImage = "/Engine;component/Images/Family/infect_player.png";
+            }
         }
 
         public void DinnerOk()
@@ -523,9 +622,11 @@ namespace Engine.ViewModels
                             //CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "19", "Any", 4);
                             break;
                         case 20: //should only be there if obese
-                            CurrentPlayer.NextDayMessages.Add(CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "20", "Any", 5));
+                            CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "20", "Any", 5);
+                            return;
+                            //CurrentPlayer.NextDayMessages.Add(CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "20", "Any", 5));
                             //CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "20", "Any", 5);
-                            break;
+                            //break;
                         default:
                             CurrentPlayer.NextDayMessages.Add(CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "20", "Any", 5));
                             //CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "20", "Any", 5);
@@ -551,8 +652,50 @@ namespace Engine.ViewModels
             {
                 CurrentPlayer.NextDayMessages.Add(CurrentQuestion.StatusAt("Work", "Any", "Regular", "Any", "Any", "Any", 2)); //regular next day w/o job
             }
+            //FAMILY SICKNESS AND HEALTH //1. update healths
+            List<int> Healths = new List<int> { CurrentFamilyHealth.CharacterHealth, CurrentFamilyHealth.SpouseHealth, CurrentFamilyHealth.MomHealth, CurrentFamilyHealth.DadHealth, CurrentFamilyHealth.DaughterHealth, CurrentFamilyHealth.SonHealth };
+            List<bool> Infections = new List<bool> { CurrentFamilyHealth.CharacterInfected, CurrentFamilyHealth.SpouseInfected, CurrentFamilyHealth.MomInfected, CurrentFamilyHealth.DadInfected, CurrentFamilyHealth.DaughterInfected, CurrentFamilyHealth.SonInfected };
+            bool obesity = false;
+            if (CurrentPlayer.CharacterClass == "Obese") { obesity = true; }
+            List<int> newHealths = gsf.updateHealths(Healths, Infections, obesity);
+            CurrentFamilyHealth.CharacterHealth = newHealths[0];
+            CurrentFamilyHealth.SpouseHealth = newHealths[1];
+            CurrentFamilyHealth.MomHealth = newHealths[2];
+            CurrentFamilyHealth.DadHealth = newHealths[3];
+            CurrentFamilyHealth.DaughterHealth = newHealths[4];
+            CurrentFamilyHealth.SonHealth = newHealths[5];
+            //2. update infections
+            if (CurrentFamilyHealth.CharacterInfected == true) 
+            {
+                Infections=gsf.updateInfections(Infections);
+            }
+            CurrentFamilyHealth.SpouseInfected = Infections[1];
+            CurrentFamilyHealth.MomInfected = Infections[2];
+            CurrentFamilyHealth.DadInfected = Infections[3];
+            CurrentFamilyHealth.DaughterInfected = Infections[4];
+            CurrentFamilyHealth.SonInfected = Infections[5];
+            if (CurrentPlayer.InfectionSeverity > 0) { CurrentFamilyHealth.CharacterInfected = true; } else { CurrentFamilyHealth.CharacterInfected = false; }
+            //3. update alive
+            List<string> Images = new List<string> { CurrentFamilyHealth.CharacterImage, CurrentFamilyHealth.SpouseImage, CurrentFamilyHealth.MomImage, CurrentFamilyHealth.DadImage, CurrentFamilyHealth.DaughterImage, CurrentFamilyHealth.SonImage };
+            List<bool> Living = new List<bool> { CurrentFamilyHealth.CharacterAlive, CurrentFamilyHealth.SpouseAlive, CurrentFamilyHealth.MomAlive, CurrentFamilyHealth.DadAlive, CurrentFamilyHealth.DaughterAlive, CurrentFamilyHealth.SonAlive };
+            Living = gsf.updateAlive(Healths, Living);
+            CurrentFamilyHealth.CharacterAlive = Living[0];
+            CurrentFamilyHealth.SpouseAlive = Living[1];
+            CurrentFamilyHealth.MomAlive = Living[2];
+            CurrentFamilyHealth.DadAlive = Living[3];
+            CurrentFamilyHealth.DaughterAlive = Living[4];
+            CurrentFamilyHealth.SonAlive = Living[5];
+            //4. update images
+            Images = gsf.updateImages(Images, Living, Infections);
+            CurrentFamilyHealth.CharacterImage = Images[0];
+            CurrentFamilyHealth.SpouseImage = Images[1];
+            CurrentFamilyHealth.MomImage = Images[2];
+            CurrentFamilyHealth.DadImage = Images[3];
+            CurrentFamilyHealth.DaughterImage = Images[4];
+            CurrentFamilyHealth.SonImage = Images[5];
+
             CurrentQuestionStatus = CurrentPlayer.NextDayMessages[0];
-        CurrentPlayer.NextDayMessages.RemoveAt(0);
+            CurrentPlayer.NextDayMessages.RemoveAt(0);
 
 
         }
@@ -564,7 +707,6 @@ namespace Engine.ViewModels
 
         public void SocialDistanceOk() //1 quarantine message
         {
-            CurrentPlayer.NextDayMessages.RemoveAt(0);
             if (CurrentPlayer.NextDayMessages.Count > 0)
             {
                 CurrentQuestionStatus = CurrentPlayer.NextDayMessages[0];
@@ -576,10 +718,22 @@ namespace Engine.ViewModels
             }
             
         }
+        public void CrisisOk()
+        {
+            if (CurrentPlayer.NextDayMessages.Count > 0)
+            {
+                CurrentQuestionStatus = CurrentPlayer.NextDayMessages[0];
+                CurrentPlayer.NextDayMessages.RemoveAt(0);
+            }
+            else
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Quarantine", "Any", "Any", "Any", 3);
+            }
+        }
 
         public void TestYes() //1
         {
-            CurrentPlayer.NextDayMessages.RemoveAt(0);
+            //CurrentPlayer.NextDayMessages.RemoveAt(0);
             CurrentLocation =CurrentWorld.LocationAt(CurrentLocation.XCoordinate-1, CurrentLocation.YCoordinate);
             if (gsf.testChance(CurrentPlayer.Stage)) { CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "16+", "Any", 6); CurrentPlayer.Tested = true; } else
             {
@@ -588,7 +742,7 @@ namespace Engine.ViewModels
         }
         public void TestNo() //1
         {
-            CurrentPlayer.NextDayMessages.RemoveAt(0);
+            //CurrentPlayer.NextDayMessages.RemoveAt(0);
             if (CurrentPlayer.Job == "None")
             {
                 CurrentQuestionStatus = CurrentQuestion.StatusAt("Work", "Any", "Regular", "Any", "Any", "Any", 2);
@@ -614,7 +768,7 @@ namespace Engine.ViewModels
 
         public void EmergencyYes() //not confirmed infection
         { //1
-            CurrentPlayer.NextDayMessages.RemoveAt(0);
+            //CurrentPlayer.NextDayMessages.RemoveAt(0);
             CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate);
             if (gsf.hospitalizationChance(CurrentPlayer.Stage) == true)
             {
@@ -630,7 +784,7 @@ namespace Engine.ViewModels
 
         public void EmergencyNo() //not confirmed infection
         { //1
-            CurrentPlayer.NextDayMessages.RemoveAt(0);
+            //CurrentPlayer.NextDayMessages.RemoveAt(0);
             if (CurrentPlayer.Stage == "Regular")
             {
                 CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Regular", "Any", "Any", "Yes", 1); //"Do you want to go to work?"
@@ -643,7 +797,7 @@ namespace Engine.ViewModels
 
         public void HospitalizedYes()
         { //1
-            CurrentPlayer.NextDayMessages.RemoveAt(0);
+            //CurrentPlayer.NextDayMessages.RemoveAt(0);
             CurrentPlayer.ConfirmedInfection = true;
             if (gsf.hospitalizationChance(CurrentPlayer.Stage) == true)
             {
@@ -659,7 +813,7 @@ namespace Engine.ViewModels
 
         public void HospitalizedNo()
         { //1
-            CurrentPlayer.NextDayMessages.RemoveAt(0);
+            //CurrentPlayer.NextDayMessages.RemoveAt(0);
             CurrentPlayer.ConfirmedInfection = true;
             if (CurrentPlayer.Stage == "Regular")
             {
@@ -859,6 +1013,108 @@ namespace Engine.ViewModels
         public void HospitalQuarantineOk()
         {
             CurrentQuestionStatus = CurrentPlayer.NextDayMessages[0];
+        }
+
+        public void StarvedOk()
+        {
+            CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "Any", "Any", 6);
+            //FAMILY SICKNESS AND HEALTH //1. update healths
+            List<int> Healths = new List<int> { CurrentFamilyHealth.CharacterHealth, CurrentFamilyHealth.SpouseHealth, CurrentFamilyHealth.MomHealth, CurrentFamilyHealth.DadHealth, CurrentFamilyHealth.DaughterHealth, CurrentFamilyHealth.SonHealth };
+            List<bool> Infections = new List<bool> { CurrentFamilyHealth.CharacterInfected, CurrentFamilyHealth.SpouseInfected, CurrentFamilyHealth.MomInfected, CurrentFamilyHealth.DadInfected, CurrentFamilyHealth.DaughterInfected, CurrentFamilyHealth.SonInfected };
+            bool obesity = false;
+            if (CurrentPlayer.CharacterClass == "Obese") { obesity = true; }
+            List<int> newHealths = gsf.updateHealths(Healths, Infections, obesity);
+            CurrentFamilyHealth.CharacterHealth = newHealths[0];
+            CurrentFamilyHealth.SpouseHealth = newHealths[1];
+            CurrentFamilyHealth.MomHealth = newHealths[2];
+            CurrentFamilyHealth.DadHealth = newHealths[3];
+            CurrentFamilyHealth.DaughterHealth = newHealths[4];
+            CurrentFamilyHealth.SonHealth = newHealths[5];
+            //2. update infections
+            if (CurrentFamilyHealth.CharacterInfected == true)
+            {
+                Infections = gsf.updateInfections(Infections);
+            }
+            CurrentFamilyHealth.SpouseInfected = Infections[1];
+            CurrentFamilyHealth.MomInfected = Infections[2];
+            CurrentFamilyHealth.DadInfected = Infections[3];
+            CurrentFamilyHealth.DaughterInfected = Infections[4];
+            CurrentFamilyHealth.SonInfected = Infections[5];
+            if (CurrentPlayer.InfectionSeverity > 0) { CurrentFamilyHealth.CharacterInfected = true; } else { CurrentFamilyHealth.CharacterInfected = false; }
+            //3. update alive
+            List<string> Images = new List<string> { CurrentFamilyHealth.CharacterImage, CurrentFamilyHealth.SpouseImage, CurrentFamilyHealth.MomImage, CurrentFamilyHealth.DadImage, CurrentFamilyHealth.DaughterImage, CurrentFamilyHealth.SonImage };
+            List<bool> Living = new List<bool> { CurrentFamilyHealth.CharacterAlive, CurrentFamilyHealth.SpouseAlive, CurrentFamilyHealth.MomAlive, CurrentFamilyHealth.DadAlive, CurrentFamilyHealth.DaughterAlive, CurrentFamilyHealth.SonAlive };
+            Living = gsf.updateAlive(Healths, Living);
+            CurrentFamilyHealth.CharacterAlive = Living[0];
+            CurrentFamilyHealth.SpouseAlive = Living[1];
+            CurrentFamilyHealth.MomAlive = Living[2];
+            CurrentFamilyHealth.DadAlive = Living[3];
+            CurrentFamilyHealth.DaughterAlive = Living[4];
+            CurrentFamilyHealth.SonAlive = Living[5];
+            //4. update images
+            Images = gsf.updateImages(Images, Living, Infections);
+            CurrentFamilyHealth.CharacterImage = Images[0];
+            CurrentFamilyHealth.SpouseImage = Images[1];
+            CurrentFamilyHealth.MomImage = Images[2];
+            CurrentFamilyHealth.DadImage = Images[3];
+            CurrentFamilyHealth.DaughterImage = Images[4];
+            CurrentFamilyHealth.SonImage = Images[5];
+
+        }
+
+        public void DeathOk()
+        {
+            //Player reset
+            CurrentPlayer.NextDayMessages.Clear();
+            CurrentPlayer.Name = "Tiffily";
+            CurrentPlayer.CharacterClass = "";
+            CurrentPlayer.Job = "";
+            CurrentPlayer.Bread = 2;
+            CurrentPlayer.ToiletPaper = 3m;
+            CurrentPlayer.City = "";
+            CurrentPlayer.Mode = "";
+            CurrentPlayer.Stage = "Regular";
+            CurrentPlayer.InfectionChance = 0;
+            CurrentPlayer.InfectionSeverity = 0;
+            CurrentPlayer.DaysSinceTested = 0;
+            CurrentPlayer.Tested = false;
+            CurrentPlayer.Hospitalized = false;
+            CurrentPlayer.DaysSinceStart = 0;
+            CurrentPlayer.Karma = 50;
+            CurrentPlayer.NextDayMessages.Add(CurrentQuestion.StatusAt("Home", "Any", "Regular", "Any", "Any", "Yes", 1));
+            //Family reset
+            CurrentFamilyHealth.CharacterHealth = 90;
+            CurrentFamilyHealth.MomHealth = 67;
+            CurrentFamilyHealth.DadHealth = 62;
+            CurrentFamilyHealth.SpouseHealth = 95;
+            CurrentFamilyHealth.DaughterHealth = 90;
+            CurrentFamilyHealth.SonHealth = 90;
+
+            CurrentFamilyHealth.CharacterInfected = false;
+            CurrentFamilyHealth.MomInfected = false;
+            CurrentFamilyHealth.DadInfected = false;
+            CurrentFamilyHealth.SpouseInfected = false;
+            CurrentFamilyHealth.DaughterInfected = false;
+            CurrentFamilyHealth.SonInfected = false;
+
+            CurrentFamilyHealth.CharacterAlive = true;
+            CurrentFamilyHealth.MomAlive = true;
+            CurrentFamilyHealth.DadAlive = true;
+            CurrentFamilyHealth.SpouseAlive = true;
+            CurrentFamilyHealth.DaughterAlive = true;
+            CurrentFamilyHealth.SonAlive = true;
+
+            CurrentFamilyHealth.CharacterImage = "/Engine;component/Images/Family/player.png";
+            CurrentFamilyHealth.MomImage = "/Engine;component/Images/Family/mom.png";
+            CurrentFamilyHealth.DadImage = "/Engine;component/Images/Family/dad.png";
+            CurrentFamilyHealth.SpouseImage = "/Engine;component/Images/Family/spouse.png";
+            CurrentFamilyHealth.DaughterImage = "/Engine;component/Images/Family/daughter.png";
+            CurrentFamilyHealth.SonImage = "/Engine;component/Images/Family/son.png";
+            //Location reset
+            CurrentLocation = CurrentWorld.LocationAt(-1,-1);
+
+
+            CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "None", "Regular", "Any", "Any", "Yes", 1);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -191,6 +191,23 @@ namespace WPFUI
                 case "You were informed that today the city has been put in quarantine.":
                     _gameSession.HospitalQuarantineOk();
                     break;
+                case "On the news this morning, they announced that the country is in a state of crisis. Hospitals are past their carrying capacity and stores are empty from panic buying.":
+                    _gameSession.CrisisOk();
+                    _gameSession.HasButton2 = true;
+                    Button1.Content = "Yes";
+                    break;
+                case "You died from starvation.":
+                    _gameSession.DeathOk();
+                    _gameSession.HasButton2 = true;
+                    Button1.Content = "Easy";
+                    Button2.Content = "Hard";
+                    break;
+                case "You passed away from the coronavirus.":
+                    _gameSession.DeathOk();
+                    _gameSession.HasButton2 = true;
+                    Button1.Content = "Easy";
+                    Button2.Content = "Hard";
+                    break;
                 default:
                     break;
             }
@@ -350,33 +367,30 @@ namespace WPFUI
                     break;
                 case "Who will eat dinner today?":
                     int membersEaten = 0;
-                    if (Character.IsChecked==true) { membersEaten++; }
-                    if (Spouse.IsChecked == true) { membersEaten++; }
-                    if (Mother.IsChecked == true) { membersEaten++; }
-                    if (Father.IsChecked == true) { membersEaten++; }
-                    if (Daughter.IsChecked == true) { membersEaten++; }
-                    if (Son.IsChecked == true) { membersEaten++; }
-                    if (membersEaten <= _gameSession.CurrentPlayer.Bread*2)
+                    bool starved = false;
+                    if (Character.IsChecked==true) { membersEaten++; } else { _gameSession.CurrentFamilyHealth.CharacterHealth -= 20;
+                        if (_gameSession.CurrentFamilyHealth.CharacterHealth <= 0) { _gameSession.CurrentFamilyHealth.CharacterHealth = 0; starved = true; }
+                    }
+                    if (Spouse.IsChecked == true) { membersEaten++; } else {_gameSession.CurrentFamilyHealth.SpouseHealth -= 20; 
+                        if (_gameSession.CurrentFamilyHealth.SpouseHealth <= 0) { _gameSession.CurrentFamilyHealth.SpouseHealth = 0; }
+                    }
+                    if (Mother.IsChecked == true) { membersEaten++; } else { _gameSession.CurrentFamilyHealth.MomHealth -= 20;
+                        if (_gameSession.CurrentFamilyHealth.MomHealth <= 0) { _gameSession.CurrentFamilyHealth.MomHealth = 0;}
+                    }
+                    if (Father.IsChecked == true) { membersEaten++; } else { _gameSession.CurrentFamilyHealth.DadHealth -= 20;
+                        if (_gameSession.CurrentFamilyHealth.DadHealth <= 0) { _gameSession.CurrentFamilyHealth.DadHealth = 0;}
+                    }
+                    if (Daughter.IsChecked == true) { membersEaten++; } else { _gameSession.CurrentFamilyHealth.DaughterHealth -= 20;
+                        if (_gameSession.CurrentFamilyHealth.DaughterHealth <= 0) { _gameSession.CurrentFamilyHealth.DaughterHealth = 0;}
+                    }
+                    if (Son.IsChecked == true) { membersEaten++; }else { _gameSession.CurrentFamilyHealth.SonHealth -= 20;
+                        if (_gameSession.CurrentFamilyHealth.SonHealth <= 0) { _gameSession.CurrentFamilyHealth.SonHealth = 0;}
+                    }
+                    if (starved)
                     {
-                        _gameSession.CurrentPlayer.Bread -= membersEaten * .5;
-
-                        _gameSession.DinnerOk();
-                        if (QuestionText.Text == "You should begin practicing social distancing due to concerns over the virus." 
-                            || QuestionText.Text == "This morning you recieved an email-- due to concerns over the coronavirus, you may no longer go to work. You were laid off."
-                            ||QuestionText.Text=="You passed away from the coronavirus."
-                            ||QuestionText.Text== "On the news this morning, they announced that the country is in a state of crisis. Hospitals are past their carrying capacity and stores are empty from panic buying.") //quarantine message
-                        {
-                            _gameSession.HasButton2 = false;
-                            Button1.Content = "Ok";
-                            Button2.Content = "No";
-
-                        }
-                        else
-                        {
-                            Button1.Content = "Yes";
-                            Button2.Content = "No";
-                        }
-
+                        _gameSession.StarvedOk();
+                        _gameSession.HasButton2 = false;
+                        Button1.Content = "Ok";
                         Character.IsChecked = false;
                         Spouse.IsChecked = false;
                         Mother.IsChecked = false;
@@ -390,13 +404,53 @@ namespace WPFUI
                         _gameSession.HasCheckFather = false;
                         _gameSession.HasCheckDaughter = false;
                         _gameSession.HasCheckSon = false;
-                        _gameSession.RaiseMessage("");
-                        _gameSession.RaiseMessage(_gameSession.CurrentDay.Date);
+
                     }
                     else
                     {
-                        _gameSession.DinnerBread();
+                        if (membersEaten <= _gameSession.CurrentPlayer.Bread * 2)
+                        {
+                            _gameSession.CurrentPlayer.Bread -= membersEaten * .5;
+
+                            _gameSession.DinnerOk();
+                            if (QuestionText.Text == "You should begin practicing social distancing due to concerns over the virus."
+                                || QuestionText.Text == "This morning you recieved an email-- due to concerns over the coronavirus, you may no longer go to work. You were laid off."
+                                || QuestionText.Text == "You passed away from the coronavirus."
+                                || QuestionText.Text == "On the news this morning, they announced that the country is in a state of crisis. Hospitals are past their carrying capacity and stores are empty from panic buying.") //quarantine message
+                            {
+                                _gameSession.HasButton2 = false;
+                                Button1.Content = "Ok";
+                                Button2.Content = "No";
+
+                            }
+                            else
+                            {
+                                Button1.Content = "Yes";
+                                Button2.Content = "No";
+                            }
+
+                            Character.IsChecked = false;
+                            Spouse.IsChecked = false;
+                            Mother.IsChecked = false;
+                            Father.IsChecked = false;
+                            Daughter.IsChecked = false;
+                            Son.IsChecked = false;
+
+                            _gameSession.HasCheckMe = false;
+                            _gameSession.HasCheckSpouse = false;
+                            _gameSession.HasCheckMother = false;
+                            _gameSession.HasCheckFather = false;
+                            _gameSession.HasCheckDaughter = false;
+                            _gameSession.HasCheckSon = false;
+                            _gameSession.RaiseMessage("");
+                            _gameSession.RaiseMessage(_gameSession.CurrentDay.Date);
+                        }
+                        else
+                        {
+                            _gameSession.DinnerBread();
+                        }
                     }
+                    
                     break;
 
                 case "Who will eat dinner today? \n You do not have enough bread. Select less family members.":
