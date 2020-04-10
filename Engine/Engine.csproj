@@ -39,6 +39,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WpfAnimatedGif, Version=2.0.0.0, Culture=neutral, PublicKeyToken=9e7cd3b544a090dc, processorArchitecture=MSIL">
+      <HintPath>..\packages\WpfAnimatedGif.2.0.0\lib\net40\WpfAnimatedGif.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventArgs\GameMessageEventArgs.cs" />
@@ -117,6 +120,18 @@
     <Resource Include="Images\Family\infect_player.png" />
     <Resource Include="Images\Family\infect_son.png" />
     <Resource Include="Images\Family\infect_spouse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Body\body1.gif" />
+    <Resource Include="Images\Body\body2.gif" />
+    <Resource Include="Images\Body\body3.gif" />
+    <Resource Include="Images\Body\body4.gif" />
+    <Resource Include="Images\Body\body5.gif" />
+    <Resource Include="Images\Body\body6.gif" />
+    <Resource Include="Images\Body\body7.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

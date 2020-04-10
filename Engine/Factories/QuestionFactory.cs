@@ -73,6 +73,8 @@ namespace Engine.Factories
             //STAGE 3/CRISIS
             newQuestion.AddStatus("Home", "Any", "Crisis", "Any", "Any", "Yes", 1,
                 "On the news this morning, they announced that the country is in a state of crisis. Hospitals are past their carrying capacity and stores are empty from panic buying.");
+            newQuestion.AddStatus("Home", "Any", "Crisis", "Any", "Any", "Yes", 2,
+                "You survived the pandemic."); 
 
             //INFECTION SEVERITY
             newQuestion.AddStatus("Home", "Any", "Any", "Any", "16", "Any", 1,

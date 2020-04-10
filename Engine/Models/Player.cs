@@ -28,6 +28,7 @@ namespace Engine.Models
         private int _daysSinceStart;
         private int _dailyIncome;
         private int _karma;
+        private string _bodyGif;
 
         private List<QuestionStatus> _nextDayMessages;
 
@@ -230,6 +231,16 @@ namespace Engine.Models
             {
                 _karma = value;
                 OnPropertyChanged("Karma");
+            }
+        }
+
+        public string BodyGif
+        {
+            get { return _bodyGif; }
+            set
+            {
+                _bodyGif = value;
+                OnPropertyChanged("BodyGif");
             }
         }
 

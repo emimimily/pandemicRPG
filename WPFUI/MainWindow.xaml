@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFUI"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com" 
         xmlns:ViewModels="clr-namespace:Engine.ViewModels;assembly=Engine" 
         d:DataContext="{d:DesignInstance ViewModels:GameSession}"
         mc:Ignorable="d"
@@ -41,7 +42,7 @@
             </Grid.ColumnDefinitions>
 
             <Image Grid.Row="0"  HorizontalAlignment="Right" Source="/Engine;component/Images/Diagrams/blank_map.png" Margin="-6,0,-36,292" Grid.RowSpan="2" Width="256"  />
-            <Image Grid.Row="1"  HorizontalAlignment="Right" Source="/Engine;component/Images/Diagrams/blank_diagram.png" Margin="0,34,34,0" Width="119"/>
+            <Image Grid.Row="1"  HorizontalAlignment="Right" gif:ImageBehavior.AnimatedSource="{Binding CurrentPlayer.BodyGif}" Margin="-46,34,-54,0" Width="319"/>
 
         </Grid>
 

@@ -172,7 +172,7 @@ namespace Engine.Functions
             return newHealths;
         }
 
-        public List<bool> updateInfections(List<bool> currentInfections)
+        public List<bool> updateInfections(List<bool> currentInfections) //determines if they're infected
         {
             Random rnd = new Random();
             List<bool> newInfections = currentInfections;
@@ -183,13 +183,38 @@ namespace Engine.Functions
                 {
                     newInfections[i] = true;
                 }
+                else
+                {
+                    newInfections[i] = false;
+                }
+            }
+            return newInfections;
+        }
+        public List<bool> updateInfections2(List<bool> currentInfections) //if they're already infected, update if they recover
+        {
+            Random rnd = new Random();
+            List<bool> newInfections = currentInfections;
+            for (int i = 1; i < currentInfections.Count; i++) //excludes the character
+            {
+                if (currentInfections[i] == true)
+                {
+                    int randomRoll = rnd.Next(1, 11);
+                    if (randomRoll >= 8) //30% chance to not be infected anymore
+                    {
+                        newInfections[i] = false;
+                    }
+                    else
+                    {
+                        newInfections[i] = true;
+                    }
+                }
             }
             return newInfections;
         }
         public List<bool> updateAlive(List<int> currentHealths, List<bool> currentAlive)
         {
             List<bool> newAlive = currentAlive;
-            for(int i=0; i<currentAlive.Count; i++)
+            for(int i=1; i<currentAlive.Count; i++)
             {
                 if (currentHealths[i] <= 0)
                 {
@@ -287,6 +312,31 @@ namespace Engine.Functions
                 }
             }
             return newImages;
+        }
+
+        public string updateBodyDiagram(int infectionSeverity)
+        {
+            switch (infectionSeverity)
+            {
+                case 0:
+                    return "/Engine;component/Images/Body/body1.gif";
+                case 1:
+                    return "/Engine;component/Images/Body/body1.gif";
+                case 2:
+                    return "/Engine;component/Images/Body/body2.gif";
+                case 3:
+                    return "/Engine;component/Images/Body/body3.gif";
+                case 4:
+                    return "/Engine;component/Images/Body/body4.gif";
+                case 5:
+                    return "/Engine;component/Images/Body/body5.gif";
+                case 6:
+                    return "/Engine;component/Images/Body/body6.gif";
+                case 7:
+                    return "/Engine;component/Images/Body/body7.gif";
+                default:
+                    return "/Engine;component/Images/Body/body7.gif";
+            }
         }
 
     }
