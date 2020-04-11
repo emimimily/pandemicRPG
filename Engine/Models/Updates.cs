@@ -9,12 +9,13 @@ namespace Engine.Models
     public class Updates
     {
         private List<DailyUpdate> _dailyUpdate = new List<DailyUpdate>();
-        internal void AddDailyUpdate(string city, int index, string caseUpdate)
+        internal void AddDailyUpdate(string city, int index, string caseUpdate, string map)
         {
             DailyUpdate upd = new DailyUpdate();
             upd.City = city;
             upd.Index = index;
             upd.CaseUpdate = caseUpdate;
+            upd.Map = map;
 
             _dailyUpdate.Add(upd);
         }

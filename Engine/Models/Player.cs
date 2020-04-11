@@ -29,8 +29,10 @@ namespace Engine.Models
         private int _dailyIncome;
         private int _karma;
         private string _bodyGif;
+        private int _peopleYouInfected;
 
         private List<QuestionStatus> _nextDayMessages;
+        private List<int> _breadAge;
 
         public string Name
         {
@@ -244,6 +246,25 @@ namespace Engine.Models
             }
         }
 
+        public int PeopleYouInfected
+        {
+            get { return _peopleYouInfected; }
+            set
+            {
+                _peopleYouInfected = value;
+                OnPropertyChanged("PeopleYouInfected");
+            }
+        }
+
+        public List<int> BreadAge
+        {
+            get { return _breadAge; }
+            set
+            {
+                _breadAge = value;
+                OnPropertyChanged("BreadAge");
+            }
+        }
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged (string propertyName)

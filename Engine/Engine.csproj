@@ -104,9 +104,6 @@
     <Resource Include="Images\Family\player.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Diagrams\blank_diagram.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Diagrams\blank_map.png" />
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +133,53 @@
     <Resource Include="Images\Body\body5.gif" />
     <Resource Include="Images\Body\body6.gif" />
     <Resource Include="Images\Body\body7.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Family\money.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Body\body10.gif" />
+    <Resource Include="Images\Body\body11.gif" />
+    <Resource Include="Images\Body\body12.gif" />
+    <Resource Include="Images\Body\body13.gif" />
+    <Resource Include="Images\Body\body14.gif" />
+    <Resource Include="Images\Body\body15.gif" />
+    <Resource Include="Images\Body\body16.gif" />
+    <Resource Include="Images\Body\body17.gif" />
+    <Resource Include="Images\Body\body18.gif" />
+    <Resource Include="Images\Body\body19.gif" />
+    <Resource Include="Images\Body\body20.gif" />
+    <Resource Include="Images\Body\body8.gif" />
+    <Resource Include="Images\Body\body9.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Diagrams\heartbeat.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Body\body0.gif" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Map\map_01.png" />
+    <Resource Include="Images\Map\map_10.png" />
+    <Resource Include="Images\Map\map_11.png" />
+    <Resource Include="Images\Map\map_12.png" />
+    <Resource Include="Images\Map\map_13.png" />
+    <Resource Include="Images\Map\map_14.png" />
+    <Resource Include="Images\Map\map_15.png" />
+    <Resource Include="Images\Map\map_16.png" />
+    <Resource Include="Images\Map\map_17.png" />
+    <Resource Include="Images\Map\map_18.png" />
+    <Resource Include="Images\Map\map_19.png" />
+    <Resource Include="Images\Map\map_02.png" />
+    <Resource Include="Images\Map\map_20.png" />
+    <Resource Include="Images\Map\map_03.png" />
+    <Resource Include="Images\Map\map_04.png" />
+    <Resource Include="Images\Map\map_05.png" />
+    <Resource Include="Images\Map\map_06.png" />
+    <Resource Include="Images\Map\map_07.png" />
+    <Resource Include="Images\Map\map_08.png" />
+    <Resource Include="Images\Map\map_09.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

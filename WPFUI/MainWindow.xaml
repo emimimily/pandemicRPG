@@ -41,7 +41,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Image Grid.Row="0"  HorizontalAlignment="Right" Source="/Engine;component/Images/Diagrams/blank_map.png" Margin="-6,0,-36,292" Grid.RowSpan="2" Width="256"  />
+            <Image Grid.Row="0"  HorizontalAlignment="Right" Source="{Binding CurrentDailyUpdate.Map}" Margin="-6,0,-36,292" Grid.RowSpan="2" Width="256"  />
             <Image Grid.Row="1"  HorizontalAlignment="Right" gif:ImageBehavior.AnimatedSource="{Binding CurrentPlayer.BodyGif}" Margin="-46,34,-54,0" Width="319"/>
 
         </Grid>
@@ -107,17 +107,17 @@
                 </Grid>
 
             </Border>
-
+            <Button Content="Add IS" x:Name="IS" Click="ISClick" Margin="406,0,0,212"/>
             <!-- Monster information -->
             <Border Grid.Row="1" Grid.Column="1"
                     BorderBrush="Gainsboro"
                     BorderThickness="1">
-                <!--<Button Content="Add IS" x:Name="IS" Click="ISClick"/>-->
+               
                 <Border Grid.Row="0" Grid.Column="0"
                     Grid.RowSpan="2"
                     BorderBrush="Gainsboro"
                     BorderThickness="1">
-
+                       
                     <RichTextBox x:Name="UpdateMessages"
                              Background="Gray"
                              VerticalScrollBarVisibility="Auto">
@@ -129,41 +129,13 @@
                     </RichTextBox>
 
                 </Border>
-                <!--<Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Row="0"
-                               HorizontalAlignment="Center"
-                               Height="Auto"
-                               Text="{Binding CurrentMonster.Name}" />
-
-                    <Image Grid.Row="1"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Height="125"
-                           Width="125"
-                           Source="{Binding CurrentMonster.ImageName}" />
-
-                    <StackPanel Grid.Row="2"
-                                Visibility="{Binding HasMonster, Converter={StaticResource BooleanToVisibility}}"
-                                HorizontalAlignment="Center"
-                                Orientation="Horizontal">
-                        <TextBlock>Current Hit Points:</TextBlock>
-                        <TextBlock Text="{Binding CurrentMonster.HitPoints}" />
-                    </StackPanel>
-
-                </Grid>-->
 
             </Border>
 
         </Grid>
 
-
         <Grid Grid.Row="2" Grid.Column="0" Grid.RowSpan="2">
+            <Image Grid.Column="0" Panel.ZIndex="1" HorizontalAlignment="Right" gif:ImageBehavior.AnimatedSource="/Engine;component/Images/Diagrams/heartbeat.gif" Margin="0,-184,-62,-188" Width="312" Visibility="{Binding HasHeartbeatGif, Converter={StaticResource BooleanToVisibility}}"/>
             <TabControl >
                 <TabItem Header="Supplies">
                     <Grid>
@@ -186,6 +158,7 @@
 
                         <Label Grid.Row="1" Grid.Column="1" Content="Money:"/>
                         <Label Grid.Row="1" Grid.Column="2" Content="{Binding CurrentPlayer.Money}"/>
+                        <Image Grid.Row="1"  HorizontalAlignment="Right" Source="/Engine;component/Images/Family/money.png" Width="50" Height="50" />
 
                         <Label Grid.Row="2" Grid.Column="1" Content="Bread:"/>
                         <Label Grid.Row="2" Grid.Column="2" Content="{Binding CurrentPlayer.Bread}"/>
@@ -284,8 +257,10 @@
                         <Label Grid.Row="5" Grid.Column="1" Content="{Binding CurrentPlayer.InfectionSeverity}"/>
                         <Label Grid.Row="6" Grid.Column="0" Content="Tested:"/>
                         <Label Grid.Row="6" Grid.Column="1" Content="{Binding CurrentPlayer.Tested}"/>
-                        <Label Grid.Row="7" Grid.Column="0" Content="Karma:"/>
-                        <Label Grid.Row="7" Grid.Column="1" Content="{Binding CurrentPlayer.Karma}"/>
+                        <!--<Label Grid.Row="7" Grid.Column="0" Content="DST:"/>
+                        <Label Grid.Row="7" Grid.Column="1" Content="{Binding CurrentPlayer.DaysSinceTested}"/>-->
+                        <Label Grid.Row="7" Grid.Column="0" Content="PYI:"/>
+                        <Label Grid.Row="7" Grid.Column="1" Content="{Binding CurrentPlayer.PeopleYouInfected}"/>
                     </Grid>
                 </TabItem>
             </TabControl>

@@ -11,5 +11,6 @@ namespace Engine.Models
         public string City { get; set; }
         public int Index { get; set; }
         public string CaseUpdate { get; set; }
+        public string Map { get; set; }
     }
 }

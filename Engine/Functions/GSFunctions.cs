@@ -96,7 +96,7 @@ namespace Engine.Functions
                 if (randomRoll <= 8) { newSeverity += 1; } //<=6
                 if (randomRoll <= 10 && randomRoll > 8) { newSeverity--; }
             }
-            if (atHospital) { newSeverity--; }
+            if (atHospital) { newSeverity-=2; }
             return newSeverity;
         }
 
@@ -143,7 +143,7 @@ namespace Engine.Functions
         public List<int> updateHealths(List<int> currentHealths, List<bool> currentInfections, bool obese)
         { //0. player, 1. spouse, 2. mom, 3. dad, 4. daughter, 5. son
             List<int> newHealths = currentHealths;
-            for(int i=0; i<currentHealths.Count; i++)
+            for(int i=1; i<currentHealths.Count; i++)
             {
                 if (currentHealths[i] == 0) { continue; }
                 if (currentInfections[i] == true)
@@ -319,7 +319,7 @@ namespace Engine.Functions
             switch (infectionSeverity)
             {
                 case 0:
-                    return "/Engine;component/Images/Body/body1.gif";
+                    return "/Engine;component/Images/Body/body0.gif";
                 case 1:
                     return "/Engine;component/Images/Body/body1.gif";
                 case 2:
@@ -334,9 +334,61 @@ namespace Engine.Functions
                     return "/Engine;component/Images/Body/body6.gif";
                 case 7:
                     return "/Engine;component/Images/Body/body7.gif";
+                case 8:
+                    return "/Engine;component/Images/Body/body8.gif";
+                case 9:
+                    return "/Engine;component/Images/Body/body9.gif";
+                case 10:
+                    return "/Engine;component/Images/Body/body10.gif";
+                case 11:
+                    return "/Engine;component/Images/Body/body11.gif";
+                case 12:
+                    return "/Engine;component/Images/Body/body12.gif";
+                case 13:
+                    return "/Engine;component/Images/Body/body13.gif";
+                case 14:
+                    return "/Engine;component/Images/Body/body14.gif";
+                case 15:
+                    return "/Engine;component/Images/Body/body15.gif";
+                case 16:
+                    return "/Engine;component/Images/Body/body16.gif";
+                case 17:
+                    return "/Engine;component/Images/Body/body17.gif";
+                case 18:
+                    return "/Engine;component/Images/Body/body18.gif";
+                case 19:
+                    return "/Engine;component/Images/Body/body19.gif";
+                case 20:
+                    return "/Engine;component/Images/Body/body20.gif";
+
                 default:
                     return "/Engine;component/Images/Body/body7.gif";
             }
+        }
+        public int infectPeople(int currentPYI, int infectionSeverity)
+        {
+            int newPYI = currentPYI;
+            Random rnd = new Random();
+            if (infectionSeverity > 0)
+            {
+                return newPYI+ rnd.Next(0, 4);
+            }
+            return newPYI;
+        }
+
+        public List<int> updateBreadAge(List<int> currentBreadAge)
+        {
+            List<int> newBreadAge = currentBreadAge;
+            for(int i=0; i < newBreadAge.Count; i++)
+            {
+                newBreadAge[i]++;
+                if (newBreadAge[i] == 5)
+                {
+                    newBreadAge.Remove(i);
+                    newBreadAge.Remove(i + 1);
+                }
+            }
+            return newBreadAge;
         }
 
     }
