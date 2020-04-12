@@ -391,5 +391,33 @@ namespace Engine.Functions
             return newBreadAge;
         }
 
+        public int randomIndex(string city, string date, int money, double bread, bool daughterAlive, bool fatherAlive, string job)
+        {
+            Random rnd = new Random();
+            List<int> possibleIndexes = new List<int>() { 10, 11, 12, 13, 14, 15, 16, 17, 26 };
+            if (money >= 50) { possibleIndexes.Add(21); }
+            if (bread >= 1) { possibleIndexes.Add(19); possibleIndexes.Add(20); }
+            if(date == "1/18/20" && city=="Wuhan" && daughterAlive) { return 22;  } //lunar celebration
+            if (date == "4/12/20" && city!="Wuhan" && daughterAlive) { return 23; } //easter
+            if (date == "3/27/20" && daughterAlive) { return 24; } //daughter birthday
+            //NYC = 2/23, Wuhan = 1/24, London = 3/17, LA = 3/20
+            if ((date == "2/23/20" && city=="New York City")|| (date=="1/24/20" && city=="Wuhan") || (date=="3/17/20" && city=="London") || (date=="3/20/20" && city=="Los Angeles")) { return 25; } //your birthday
+            if (date == "4/11/20" && (city=="New York City"||city=="Los Angeles")) { return 28; }
+            if(job=="None" && (city=="New York" || city=="Wuhan") && fatherAlive) { possibleIndexes.Add(27); }
+            int index = rnd.Next(0, possibleIndexes.Count);
+            return possibleIndexes[index];
+        }
+
+        public int randomStoreIndex(bool momAlive, string stage) //4 possible
+        {
+            Random rnd = new Random();
+            int randomRoll;
+            if (momAlive) {  randomRoll= rnd.Next(0, 14); } else { randomRoll = rnd.Next(0, 12); }
+            if(randomRoll == 13) { return 29; } //mom
+            if (randomRoll == 12) { return 30; } //mom
+            if (randomRoll== 11) { return 31; } //elderly neighbor
+            if(stage!="Regular") { return 3; }
+            return 2;
+        }
     }
 }

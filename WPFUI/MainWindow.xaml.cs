@@ -85,15 +85,6 @@ namespace WPFUI
                     Button2.Content = "Ok";
                     _gameSession.RaiseMessage("You went to the store.");
                     break;
-                case "When you came home, your friend Dave invited you to a party. Will you go?":
-                    _gameSession.PartyYes();
-                    _gameSession.RaiseMessage("You attended your friend Dave's party.");
-                    if (QuestionText.Text == "Who will eat dinner today?")
-                    {
-                        Button1.Content = "Check all";
-                        Button2.Content = "Ok";
-                    }
-                    break;
                 case "Do you want to wash your hands before you eat dinner? It will cost 10% of a toilet paper roll.":
                     _gameSession.HomeWashYes();
                     _gameSession.RaiseMessage("You washed your hands before dinner.");
@@ -278,8 +269,123 @@ namespace WPFUI
                     GameMessages.Document.Blocks.Clear();
                     UpdateMessages.Document.Blocks.Clear();
                     break;
-                default:
+                //random
+                case "Your friend Dave invited you to a party. Will you go?":
+                    _gameSession.LC_RIC_Yes();
+                    if(QuestionText.Text== "Who will eat dinner today?")
+                    {
+                        Button2.Content = "Ok";
+                    }
                     break;
+                case "Your great aunt has invited you to a large family get-together with other distant relatives. Will you attend?":
+                    _gameSession.LC_RIC_Yes();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("You went to your great aunt's large family get-together.");
+                    break;
+                case "One of your close friends is visiting the city and wants to come over. Are you going to invite him?":
+                    _gameSession.LC_RIC_Yes();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("You invited your friend over.");
+                    break;
+                case "Despite quarantine orders, are you still going to go to church today?":
+                    _gameSession.LC_RIC_Yes();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("You went to church.");
+                    break;
+                case "A few co-workers are heading to the bar after work and invite you. Will you have a drink with them?":
+                    _gameSession.LC_RIC_Yes();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("You and your coworkers went to a bar after work.");
+                    break;
+                case "One of your daughter’s friends is hosting a birthday party today. Will you allow her to go?":
+                    _gameSession.LC_RIC_Yes();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("You allowed your daughter to go to her friend's birthday party.");
+                    break;
+                case "You spot a homeless person sitting on the sidewalk with a sign asking for food. Will you give her some bread?":
+                    _gameSession.RK_LB_Yes();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("You gave some bread to a homeless person. She was incredibly grateful.");
+                    break;
+                case "A child is sitting on the sidewalk in ragged clothes. Will you give her some bread?":
+                    _gameSession.RK_LB_Yes();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("You gave a loaf of bread to a young girl in ragged clothing.");
+                    break;
+                case "The adoption centers have a shortage in workers. Would you like to foster a kitten?":
+                    _gameSession.RK_Yes();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("You are now fostering a kitten.");
+                    break;
+                case "Do you want to sew some masks for your local hospital?":
+                    _gameSession.RK_Yes();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("The hospital was in need of masks, so you sew some and donated them.");
+                    break;
+                case "You noticed that the cost of airplane tickets have significantly decreased. Would you like to buy a ticket for travel in the future?":
+                    _gameSession.LK_LM_Yes();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("You bought a cheap plane ticket for the summer.");
+                    break;
+                case "The Annual Wuhan Lunar New Year banquet is today. Will you and your family attend it?":
+                    _gameSession.LC_RIC_Yes();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("To celebrate Chinese New Year, you and your family went to the Annual Wuhan Lunar New Year banquet.");
+                    break;
+                case "Since today is Easter, your daughter wants to go to the park and celebrate. Will you allow her to go?":
+                    _gameSession.LC_RIC_Yes();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("You took your daughter to an Easter egg hunt at the park.");
+                    break;
+                case "Your daughter’s birthday is today. Do you want to invite their friends to throw a birthday party?":
+                    _gameSession.LC_RIC_Yes();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("You threw a birthday party for your daughter and invited all of her friends.");
+                    break;
+                case "Today is your birthday. Do you want to go out and have a drink?":
+                    _gameSession.LC_RIC_Yes();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("You went to the bar for your birthday.");
+                    break;
+                case "Your parents believe that the coronavirus is “just a hoax” and want to go outside for nonessential activities anyway. Do you want to try and convince them not to?":
+                    _gameSession.RK_Yes();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("Your mother and father believe that the virus is 'just a hoax.'");
+                    break;
+                case "Your father yells at you for losing your job, giving you a migraine. Do you want to go to the bar for a drink?":
+                    _gameSession.LC_RIC_Yes();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("Your father screamed at you again, so you escaped to the bar to get drunk and forget.");
+                    break;
+                case "Do you want to file for the $1800 stimulus package?":
+                    _gameSession.LC_RIC_Yes();
+                    _gameSession.CurrentPlayer.Money += 1800;
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("You recieved $1800 from the government.");
+                    break;
+                case "Your mother told you to buy some tea at the store to “increase resistance” against the coronavirus. Will you go to the store?":
+                    _gameSession.StoreYes();
+                    _gameSession.HasButton1 = false;
+                    _gameSession.HasUpDown = true;
+                    Button2.Content = "Ok";
+                    _gameSession.RaiseMessage("You went to the store.");
+                    break;
+                case "Your mother has been feeling unwell and started coughing. Instead of going to the hospital, she told you to buy some essential oils at the store instead. Will you follow her request?":
+                    _gameSession.StoreYes();
+                    _gameSession.HasButton1 = false;
+                    _gameSession.HasUpDown = true;
+                    Button2.Content = "Ok";
+                    _gameSession.RaiseMessage("You went to the store.");
+                    break;
+                case "An elderly neighbor requests for you to go out and buy them bread. Will you accept this favor?":
+                    _gameSession.StoreYes();
+                    _gameSession.CurrentPlayer.Karma += 20;
+                    _gameSession.HasButton1 = false;
+                    _gameSession.HasUpDown = true;
+                    Button2.Content = "Ok";
+                    _gameSession.RaiseMessage("You went to the store.");
+                    break;
+
             }
             
         }
@@ -425,14 +531,6 @@ namespace WPFUI
                     else
                     {
                         _gameSession.TPMoney();
-                    }
-                    break;
-                case "When you came home, your friend Dave invited you to a party. Will you go?":
-                    _gameSession.PartyNo();
-                    if (QuestionText.Text == "Who will eat dinner today?")
-                    {
-                        Button1.Content = "Check all";
-                        Button2.Content = "Ok";
                     }
                     break;
                 case "Do you want to wash your hands before you eat dinner? It will cost 10% of a toilet paper roll.":
@@ -669,6 +767,101 @@ namespace WPFUI
                     _gameSession.RaiseMessage("Despite testing positive for the coronavirus, you chose not to go to the hospital.");
                     _gameSession.HospitalizedNo();
                     break;
+                case "Your friend Dave invited you to a party. Will you go?":
+                    _gameSession.LC_RIC_Yes();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "Your great aunt has invited you to a large family get-together with other distant relatives. Will you attend?":
+                    _gameSession.LC_RIC_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "One of your close friends is visiting the city and wants to come over. Are you going to invite him?":
+                    _gameSession.LC_RIC_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "Despite quarantine orders, are you still going to go to church today?":
+                    _gameSession.LC_RIC_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "A few co-workers are heading to the bar after work and invite you. Will you have a drink with them?":
+                    _gameSession.LC_RIC_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "One of your daughter’s friends is hosting a birthday party today. Will you allow her to go?":
+                    _gameSession.LC_RIC_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "You spot a homeless person sitting on the sidewalk with a sign asking for food. Will you give her some bread?":
+                    _gameSession.RK_LB_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "A child is sitting on the sidewalk in ragged clothes. Will you give her some bread?":
+                    _gameSession.RK_LB_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "The adoption centers have a shortage in workers. Would you like to foster a kitten?":
+                    _gameSession.RK_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "Do you want to sew some masks for your local hospital?":
+                    _gameSession.RK_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "You noticed that the cost of airplane tickets have significantly decreased. Would you like to buy a ticket for travel in the future?":
+                    _gameSession.LK_LM_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "The Annual Wuhan Lunar New Year banquet is today. Will you and your family attend it?":
+                    _gameSession.LC_RIC_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "Since today is Easter, your daughter wants to go to the park and celebrate. Will you allow her to go?":
+                    _gameSession.LC_RIC_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "Your daughter’s birthday is today. Do you want to invite their friends to throw a birthday party?":
+                    _gameSession.LC_RIC_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "Today is your birthday. Do you want to go out and have a drink?":
+                    _gameSession.LC_RIC_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "Your parents believe that the coronavirus is “just a hoax” and want to go outside for nonessential activities anyway. Do you want to try and convince them not to?":
+                    _gameSession.RK_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "Your father yells at you for losing your job, giving you a migraine. Do you want to go to the bar for a drink?":
+                    _gameSession.LC_RIC_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "Your mother told you to buy some tea at the store to “increase resistance” against the coronavirus. Will you go to the store?":
+                    _gameSession.StoreNo();
+                    if (QuestionText.Text == "Who will eat dinner today?")
+                    {
+                        Button1.Content = "Check all";
+                        Button2.Content = "Ok";
+                    }
+                    break;
+                case "Your mother has been feeling unwell and started coughing. Instead of going to the hospital, she told you to buy some essential oils at the store instead. Will you follow her request?":
+                    _gameSession.StoreNo();
+                    if (QuestionText.Text == "Who will eat dinner today?")
+                    {
+                        Button1.Content = "Check all";
+                        Button2.Content = "Ok";
+                    }
+                    break;
+                case "An elderly neighbor requests for you to go out and buy them bread. Will you accept this favor?":
+                    _gameSession.StoreNo();
+                    _gameSession.CurrentPlayer.Karma -= 10;
+                    if (_gameSession.CurrentPlayer.Karma < 0) { _gameSession.CurrentPlayer.Karma = 0; }
+                    if (QuestionText.Text == "Who will eat dinner today?")
+                    {
+                        Button1.Content = "Check all";
+                        Button2.Content = "Ok";
+                    }
+                    break;
+
                 default:
                     break;
             }
