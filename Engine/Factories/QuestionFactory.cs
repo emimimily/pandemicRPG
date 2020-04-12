@@ -178,9 +178,14 @@ namespace Engine.Factories
                 "Your mother has been feeling unwell and started coughing. Instead of going to the hospital, she told you to buy some essential oils at the store instead. Will you follow her request?");
             newQuestion.AddStatus("Home", "Any", "Any", "Any", "Any", "Any", 31,
                 "An elderly neighbor requests for you to go out and buy them bread. Will you accept this favor?"); //raise+go to the store?
-            
 
+            //dave
+            newQuestion.AddStatus("Home", "Any", "Any", "Any", "Any", "Any", 32,
+                "Dave noticed that you were struggling and offered you 5 loaves of bread. Do you accept his help?");
 
+            //@store
+            newQuestion.AddStatus("Store", "Any", "Any", "Any", "Any", "Any", 0,
+                "You were able to find a bottle of vitamins. Do you want to buy them? (They will restore your parents's health)");
             return newQuestion;
 
 

@@ -212,7 +212,8 @@ namespace Engine.ViewModels
                 DaysSinceStart = 0,
                 Karma = 50,
                 BodyGif = "/Engine;component/Images/Body/body0.gif",
-                PeopleYouInfected = 0
+                PeopleYouInfected = 0,
+                DaveParties=0
 
             };
 
@@ -294,6 +295,7 @@ namespace Engine.ViewModels
             CurrentDailyUpdate = CurrentUpdates.UpdateAt("London", 1);
             RaiseUpdate(CurrentDay.Date);
             RaiseUpdate(CurrentDailyUpdate.CaseUpdate);
+            RaiseUpdate("");
 
         }
         public void CityLosAngeles()
@@ -307,6 +309,7 @@ namespace Engine.ViewModels
             CurrentDailyUpdate = CurrentUpdates.UpdateAt("Los Angeles", 1);
             RaiseUpdate(CurrentDay.Date);
             RaiseUpdate(CurrentDailyUpdate.CaseUpdate);
+            RaiseUpdate("");
         }
         public void CityWuhan()
         {
@@ -319,11 +322,12 @@ namespace Engine.ViewModels
             CurrentDailyUpdate = CurrentUpdates.UpdateAt("Wuhan", 1);
             RaiseUpdate(CurrentDay.Date);
             RaiseUpdate(CurrentDailyUpdate.CaseUpdate);
+            RaiseUpdate("");
 
         }
         public void CityNewYork()
         {
-            CurrentDay.Date = "3/14/20";
+            CurrentDay.Date = "3/14/20"; //3/14
             CurrentQuestionStatus = CurrentPlayer.NextDayMessages[0];
             CurrentPlayer.NextDayMessages.RemoveAt(0);
             CurrentLocation = CurrentWorld.LocationAt(0, 0);
@@ -332,7 +336,8 @@ namespace Engine.ViewModels
             CurrentDailyUpdate = CurrentUpdates.UpdateAt("New York City", 1);
             RaiseUpdate(CurrentDay.Date);
             RaiseUpdate(CurrentDailyUpdate.CaseUpdate);
-            
+            RaiseUpdate("");
+
         }
         public void WorkYes() //1
         {
@@ -460,7 +465,11 @@ namespace Engine.ViewModels
                 CurrentPlayer.InfectionChance += .20 - (CurrentPlayer.Karma / 2000); //.20
                 if (CurrentPlayer.Karma >= 10) { CurrentPlayer.Karma -= 10; }
             }
-            CurrentQuestionStatus = CurrentQuestion.StatusAt("Store", "Any", "Any", "Any", "Any", "Any", 1);
+            CurrentQuestionStatus = CurrentQuestion.StatusAt("Store", "Any", "Any", "Any", "Any", "Any", gsf.randomAtStoreIndex());
+            if (CurrentPlayer.Money < 20)
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Store", "Any", "Any", "Any", "Any", "Any", 1);
+            }
             if (CurrentLocation.Name == "Work") { CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate - 1); }
             else
             {
@@ -499,7 +508,7 @@ namespace Engine.ViewModels
                 CurrentFamilyHealth.CharacterInfected = false;
                 CurrentFamilyHealth.CharacterImage = "/Engine;component/Images/Family/player.png";
             }
-            CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "Any", "Any", gsf.randomIndex(CurrentPlayer.City, CurrentDay.Date,CurrentPlayer.Money,CurrentPlayer.Bread, CurrentFamilyHealth.DaughterAlive, CurrentFamilyHealth.DadAlive, CurrentPlayer.Job));
+            CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "Any", "Any", gsf.randomIndex(CurrentPlayer.City, CurrentDay.Date,CurrentPlayer.Money,CurrentPlayer.Bread, CurrentFamilyHealth.DaughterAlive, CurrentFamilyHealth.DadAlive, CurrentPlayer.Job, CurrentPlayer.DaveParties));
         }
         public void BreadOk()
         {
@@ -535,7 +544,7 @@ namespace Engine.ViewModels
                 CurrentFamilyHealth.CharacterInfected = false;
                 CurrentFamilyHealth.CharacterImage = "/Engine;component/Images/Family/player.png";
             }
-            CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "Any", "Any", gsf.randomIndex(CurrentPlayer.City, CurrentDay.Date, CurrentPlayer.Money, CurrentPlayer.Bread, CurrentFamilyHealth.DaughterAlive, CurrentFamilyHealth.DadAlive,CurrentPlayer.Job));
+            CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "Any", "Any", gsf.randomIndex(CurrentPlayer.City, CurrentDay.Date, CurrentPlayer.Money, CurrentPlayer.Bread, CurrentFamilyHealth.DaughterAlive, CurrentFamilyHealth.DadAlive,CurrentPlayer.Job, CurrentPlayer.DaveParties));
             CurrentLocation=CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate);
         }
         public void TPMoney()
@@ -576,6 +585,7 @@ namespace Engine.ViewModels
             CurrentDailyUpdate = CurrentUpdates.UpdateAt(CurrentPlayer.City, CurrentDailyUpdate.Index+1);
             RaiseUpdate(CurrentDay.Date);
             RaiseUpdate(CurrentDailyUpdate.CaseUpdate);
+            RaiseUpdate("");
             CurrentPlayer.BreadAge=gsf.updateBreadAge(CurrentPlayer.BreadAge);
             CurrentPlayer.Bread = CurrentPlayer.BreadAge.Count * .5;
             CurrentPlayer.DaysSinceStart++;
@@ -997,6 +1007,7 @@ namespace Engine.ViewModels
             CurrentDailyUpdate = CurrentUpdates.UpdateAt(CurrentPlayer.City, CurrentDailyUpdate.Index+1);
             RaiseUpdate(CurrentDay.Date);
             RaiseUpdate(CurrentDailyUpdate.CaseUpdate);
+            RaiseUpdate("");
             CurrentPlayer.DaysSinceStart++;
             if (CurrentPlayer.Stage != "Regular" && CurrentPlayer.City == "London" && CurrentPlayer.Job != "None")
             {
@@ -1082,6 +1093,7 @@ namespace Engine.ViewModels
             CurrentDailyUpdate = CurrentUpdates.UpdateAt(CurrentPlayer.City, CurrentDailyUpdate.Index+1);
             RaiseUpdate(CurrentDay.Date);
             RaiseUpdate(CurrentDailyUpdate.CaseUpdate);
+            RaiseUpdate("");
             CurrentPlayer.DaysSinceStart++;
             if (CurrentPlayer.Stage != "Regular" && CurrentPlayer.City == "London" && CurrentPlayer.Job != "None")
             {
@@ -1268,6 +1280,7 @@ namespace Engine.ViewModels
             CurrentPlayer.NextDayMessages.Add(CurrentQuestion.StatusAt("Home", "Any", "Regular", "Any", "Any", "Yes", 1));
             CurrentPlayer.BodyGif = "/Engine;component/Images/Body/body1.gif";
             CurrentPlayer.PeopleYouInfected = 0;
+            CurrentPlayer.DaveParties = 0;
             //Family reset
             CurrentFamilyHealth.CharacterHealth = 90;
             CurrentFamilyHealth.MomHealth = 67;
@@ -1481,6 +1494,62 @@ namespace Engine.ViewModels
                 if (CurrentFamilyHealth.SonAlive == true) { HasCheckSon = true; }
                 HasButton1 = false;
             }
+        }
+
+        public void RB_Yes()
+        {
+            /*CurrentPlayer.Bread += 5;
+            for(int i=0; i<10; i++) { CurrentPlayer.BreadAge.Add(1); }*/
+            CurrentPlayer.InfectionChance = .1 - (CurrentPlayer.Karma / 2000);
+            if (CurrentPlayer.ToiletPaper >= .1m)
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "Any", "Any", 3);
+            }
+            else
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "Any", "Any", 4);
+                HasCheckMe = true;
+                if (CurrentFamilyHealth.SpouseAlive == true) { HasCheckSpouse = true; }
+                if (CurrentFamilyHealth.MomAlive == true) { HasCheckMother = true; }
+                if (CurrentFamilyHealth.DadAlive == true) { HasCheckFather = true; }
+                if (CurrentFamilyHealth.DaughterAlive == true) { HasCheckDaughter = true; }
+                if (CurrentFamilyHealth.SonAlive == true) { HasCheckSon = true; }
+                HasButton1 = false;
+            }
+
+        }
+
+        public void RB_No()
+        {
+            CurrentPlayer.InfectionChance = .1 - (CurrentPlayer.Karma / 2000);
+            if (CurrentPlayer.ToiletPaper >= .1m)
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "Any", "Any", 3);
+            }
+            else
+            {
+                CurrentQuestionStatus = CurrentQuestion.StatusAt("Home", "Any", "Any", "Any", "Any", "Any", 4);
+                HasCheckMe = true;
+                if (CurrentFamilyHealth.SpouseAlive == true) { HasCheckSpouse = true; }
+                if (CurrentFamilyHealth.MomAlive == true) { HasCheckMother = true; }
+                if (CurrentFamilyHealth.DadAlive == true) { HasCheckFather = true; }
+                if (CurrentFamilyHealth.DaughterAlive == true) { HasCheckDaughter = true; }
+                if (CurrentFamilyHealth.SonAlive == true) { HasCheckSon = true; }
+                HasButton1 = false;
+            }
+        }
+
+        public void VitaminsYes()
+        {
+            if (CurrentFamilyHealth.DadAlive) { CurrentFamilyHealth.DadHealth = 100; }
+            if (CurrentFamilyHealth.MomAlive) { CurrentFamilyHealth.MomHealth = 100; }
+            CurrentPlayer.Money -= 20;
+            CurrentQuestionStatus = CurrentQuestion.StatusAt("Store", "Any", "Any", "Any", "Any", "Any", 1);
+        }
+
+        public void VitaminsNo()
+        {
+            CurrentQuestionStatus = CurrentQuestion.StatusAt("Store", "Any", "Any", "Any", "Any", "Any", 1);
         }
         public event PropertyChangedEventHandler PropertyChanged;
 

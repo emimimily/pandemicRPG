@@ -30,6 +30,7 @@ namespace Engine.Models
         private int _karma;
         private string _bodyGif;
         private int _peopleYouInfected;
+        private int _daveParties;
 
         private List<QuestionStatus> _nextDayMessages;
         private List<int> _breadAge;
@@ -263,6 +264,16 @@ namespace Engine.Models
             {
                 _breadAge = value;
                 OnPropertyChanged("BreadAge");
+            }
+        }
+
+        public int DaveParties
+        {
+            get { return _daveParties; }
+            set
+            {
+                _daveParties = value;
+                OnPropertyChanged("DaveParties");
             }
         }
         public event PropertyChangedEventHandler PropertyChanged;

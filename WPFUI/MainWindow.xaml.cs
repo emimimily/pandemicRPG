@@ -80,9 +80,16 @@ namespace WPFUI
                     break;
                 case "Do you want to go to the store?":
                     _gameSession.StoreYes();
-                    _gameSession.HasButton1 = false;
-                    _gameSession.HasUpDown = true;
-                    Button2.Content = "Ok";
+                    Button1.Content = "Yes";
+                    Button2.Content = "No";
+                    _gameSession.HasUpDown = false;
+                    if (QuestionText.Text== "How much bread do you want to buy?")
+                    {
+                        _gameSession.HasUpDown = true;
+                        _gameSession.HasButton1 = false;
+                        _gameSession.HasUpDown = true;
+                        Button2.Content = "Ok";
+                    }
                     _gameSession.RaiseMessage("You went to the store.");
                     break;
                 case "Do you want to wash your hands before you eat dinner? It will cost 10% of a toilet paper roll.":
@@ -130,10 +137,16 @@ namespace WPFUI
                 case "Do you want to go to the store? You should only go if necessary and maintain social distancing.":
                     _gameSession.StoreYes();
                     _gameSession.RaiseMessage("You went to the store.");
-                    _gameSession.HasButton1 = false;
-                    _gameSession.HasButton2 = true;
-                    _gameSession.HasUpDown = true;
-                    Button2.Content = "Ok";
+                    Button1.Content = "Yes";
+                    Button2.Content = "No";
+                    _gameSession.HasUpDown = false;
+                    if (QuestionText.Text == "How much bread do you want to buy?")
+                    {
+                        _gameSession.HasUpDown = true;
+                        _gameSession.HasButton1 = false;
+                        _gameSession.HasUpDown = true;
+                        Button2.Content = "Ok";
+                    }
                     break;
                 case "You are not feeling well, and coming down with a fever. Do you want to get tested for the coronavirus?":
                     _gameSession.TestYes();
@@ -207,6 +220,7 @@ namespace WPFUI
                     _gameSession.HospitableRecovered();
                     _gameSession.RaiseMessage("You recovered from the coronavirus and went home.");
                     _gameSession.HasButton2 = true;
+                    _gameSession.CurrentPlayer.Money -= 1000;
                     Button1.Content = "Yes";
                     break;
                 case "You were informed that today the city has been put in quarantine. You were laid off from your job and given your last paycheck.":
@@ -272,10 +286,8 @@ namespace WPFUI
                 //random
                 case "Your friend Dave invited you to a party. Will you go?":
                     _gameSession.LC_RIC_Yes();
-                    if(QuestionText.Text== "Who will eat dinner today?")
-                    {
-                        Button2.Content = "Ok";
-                    }
+                    if(QuestionText.Text== "Who will eat dinner today?"){Button2.Content = "Ok";}
+                    _gameSession.CurrentPlayer.DaveParties++;
                     break;
                 case "Your great aunt has invited you to a large family get-together with other distant relatives. Will you attend?":
                     _gameSession.LC_RIC_Yes();
@@ -358,7 +370,7 @@ namespace WPFUI
                     _gameSession.RaiseMessage("Your father screamed at you again, so you escaped to the bar to get drunk and forget.");
                     break;
                 case "Do you want to file for the $1800 stimulus package?":
-                    _gameSession.LC_RIC_Yes();
+                    _gameSession.RB_Yes();
                     _gameSession.CurrentPlayer.Money += 1800;
                     if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
                     _gameSession.RaiseMessage("You recieved $1800 from the government.");
@@ -385,7 +397,20 @@ namespace WPFUI
                     Button2.Content = "Ok";
                     _gameSession.RaiseMessage("You went to the store.");
                     break;
-
+                case "Dave noticed that you were struggling and offered you 5 loaves of bread. Do you accept his help?":
+                    _gameSession.RB_Yes();
+                    _gameSession.CurrentPlayer.Bread += 5;
+                    for (int i = 0; i < 10; i++) { _gameSession.CurrentPlayer.BreadAge.Add(1); }
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    _gameSession.RaiseMessage("You recieved 5 loaves of bread from Dave.");
+                    break;
+                case "You were able to find a bottle of vitamins. Do you want to buy them? (They will restore your parents's health)":
+                    _gameSession.VitaminsYes();
+                    _gameSession.HasUpDown = true;
+                    _gameSession.HasButton1 = false;
+                    _gameSession.HasUpDown = true;
+                    Button2.Content = "Ok";
+                    break;
             }
             
         }
@@ -861,7 +886,21 @@ namespace WPFUI
                         Button2.Content = "Ok";
                     }
                     break;
-
+                case "Do you want to file for the $1800 stimulus package?":
+                    _gameSession.RB_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "Dave noticed that you were struggling and offered you 5 loaves of bread. Do you accept his help?":
+                    _gameSession.RB_No();
+                    if (QuestionText.Text == "Who will eat dinner today?") { Button2.Content = "Ok"; }
+                    break;
+                case "You were able to find a bottle of vitamins. Do you want to buy them? (They will restore your parents's health)":
+                    _gameSession.VitaminsNo();
+                    _gameSession.HasUpDown = true;
+                    _gameSession.HasButton1 = false;
+                    _gameSession.HasUpDown = true;
+                    Button2.Content = "Ok";
+                    break;
                 default:
                     break;
             }

@@ -9,7 +9,7 @@
         xmlns:ViewModels="clr-namespace:Engine.ViewModels;assembly=Engine" 
         d:DataContext="{d:DesignInstance ViewModels:GameSession}"
         mc:Ignorable="d"
-        Title="Pandemic Simulator" Height="768" Width="1024">
+        Title="45 Days of the Pandemic" Height="768" Width="1024">
 
 
     <Window.Resources>
@@ -107,17 +107,16 @@
                 </Grid>
 
             </Border>
-            <Button Content="Add IS" x:Name="IS" Click="ISClick" Margin="406,0,0,212"/>
             <!-- Monster information -->
             <Border Grid.Row="1" Grid.Column="1"
                     BorderBrush="Gainsboro"
                     BorderThickness="1">
-               
+
                 <Border Grid.Row="0" Grid.Column="0"
                     Grid.RowSpan="2"
                     BorderBrush="Gainsboro"
                     BorderThickness="1">
-                       
+
                     <RichTextBox x:Name="UpdateMessages"
                              Background="Gray"
                              VerticalScrollBarVisibility="Auto">
@@ -251,16 +250,16 @@
                         <Label Grid.Row="2" Grid.Column="1" Content="{Binding CurrentPlayer.City}"/>
                         <Label Grid.Row="3" Grid.Column="0" Content="Fitness:"/>
                         <Label Grid.Row="3" Grid.Column="1" Content="{Binding CurrentPlayer.CharacterClass}"/>
-                        <Label Grid.Row="4" Grid.Column="0" Content="I%:"/>
+                        <!--<Label Grid.Row="4" Grid.Column="0" Content="I%:"/>
                         <Label Grid.Row="4" Grid.Column="1" Content="{Binding CurrentPlayer.InfectionChance}"/>
                         <Label Grid.Row="5" Grid.Column="0" Content="IS:"/>
                         <Label Grid.Row="5" Grid.Column="1" Content="{Binding CurrentPlayer.InfectionSeverity}"/>
                         <Label Grid.Row="6" Grid.Column="0" Content="Tested:"/>
-                        <Label Grid.Row="6" Grid.Column="1" Content="{Binding CurrentPlayer.Tested}"/>
-                        <!--<Label Grid.Row="7" Grid.Column="0" Content="DST:"/>
-                        <Label Grid.Row="7" Grid.Column="1" Content="{Binding CurrentPlayer.DaysSinceTested}"/>-->
-                        <Label Grid.Row="7" Grid.Column="0" Content="PYI:"/>
-                        <Label Grid.Row="7" Grid.Column="1" Content="{Binding CurrentPlayer.PeopleYouInfected}"/>
+                        <Label Grid.Row="6" Grid.Column="1" Content="{Binding CurrentPlayer.Tested}"/>-->
+                        <Label Grid.Row="5" Grid.Column="0" Content="Karma:"/>
+                        <Label Grid.Row="5" Grid.Column="1" Content="{Binding CurrentPlayer.Karma}"/>
+                        <Label Grid.Row="4" Grid.Column="0" Content="Infected:"/>
+                        <Label Grid.Row="4" Grid.Column="1" Content="{Binding CurrentPlayer.PeopleYouInfected}"/>
                     </Grid>
                 </TabItem>
             </TabControl>
@@ -269,7 +268,7 @@
 
 
         <Grid Grid.Row="2" Grid.Column="1"
-      Background="LightGray">
+      Background="LightGray" HorizontalAlignment="Right" Width="766">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -285,7 +284,7 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        TextWrapping="Wrap"
-                       Text="{Binding CurrentQuestionStatus.Message}">
+                       Text="{Binding CurrentQuestionStatus.Message}" Margin="52,22,60,10" Width="654" Height="43">
             </TextBlock>
         </Grid>
 

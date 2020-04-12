@@ -65,19 +65,11 @@
     <Compile Include="ViewModels\GameSession.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Locations\apartment_nyc.png" />
     <Resource Include="Images\Locations\testHome.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Locations\bank_nyc.png" />
     <Resource Include="Images\Locations\grocery_nyc.png" />
     <Resource Include="Images\Locations\hospital_nyc.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Locations\apartment_wuhan.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Locations\bank_wuhan.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Locations\grocery_wuhan.png" />
@@ -86,17 +78,10 @@
     <Resource Include="Images\Locations\hospital_wuhan.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Locations\grocery_london.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Locations\apartment_london.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Family\bread.png" />
     <Resource Include="Images\Family\dad.png" />
     <Resource Include="Images\Family\daughter.png" />
     <Resource Include="Images\Family\mom.png" />
-    <Resource Include="Images\Family\son.png" />
     <Resource Include="Images\Family\spouse.png" />
     <Resource Include="Images\Family\toilet_paper.png" />
   </ItemGroup>
@@ -111,7 +96,6 @@
     <Resource Include="Images\Family\dead_dad.png" />
     <Resource Include="Images\Family\dead_daughter.png" />
     <Resource Include="Images\Family\dead_mom.png" />
-    <Resource Include="Images\Family\dead_son.png" />
     <Resource Include="Images\Family\dead_spouse.png" />
   </ItemGroup>
   <ItemGroup>
@@ -158,7 +142,9 @@
   <ItemGroup>
     <Resource Include="Images\Body\body0.gif" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Family\dead_son.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Map\map_01.png" />
     <Resource Include="Images\Map\map_10.png" />
@@ -180,6 +166,32 @@
     <Resource Include="Images\Map\map_07.png" />
     <Resource Include="Images\Map\map_08.png" />
     <Resource Include="Images\Map\map_09.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Family\son.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Locations\apartment_la.png" />
+    <Resource Include="Images\Locations\apartment_london.png" />
+    <Resource Include="Images\Locations\apartment_wuhan.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Locations\bank_la.png" />
+    <Resource Include="Images\Locations\bank_london.png" />
+    <Resource Include="Images\Locations\bank_nyc.png" />
+    <Resource Include="Images\Locations\bank_wuhan.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Locations\grocery_la.png" />
+    <Resource Include="Images\Locations\grocery_london1.png" />
+    <Resource Include="Images\Locations\hospital_la.png" />
+    <Resource Include="Images\Locations\hospital_london.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Locations\grocery_london.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Locations\apartment_nyc.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

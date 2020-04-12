@@ -88,7 +88,7 @@ namespace Engine.Functions
             int randomRoll = rnd.Next(1, 13);
             if (health == "Obese")
             {
-                if (randomRoll <= 6) { newSeverity += 4; }
+                if (randomRoll <= 6) { newSeverity += 2; }
                 if (randomRoll <= 10 && randomRoll > 6) { newSeverity--; }
             }
             if (health == "Healthy")
@@ -391,7 +391,7 @@ namespace Engine.Functions
             return newBreadAge;
         }
 
-        public int randomIndex(string city, string date, int money, double bread, bool daughterAlive, bool fatherAlive, string job)
+        public int randomIndex(string city, string date, int money, double bread, bool daughterAlive, bool fatherAlive, string job, int daveParties)
         {
             Random rnd = new Random();
             List<int> possibleIndexes = new List<int>() { 10, 11, 12, 13, 14, 15, 16, 17, 26 };
@@ -404,6 +404,7 @@ namespace Engine.Functions
             if ((date == "2/23/20" && city=="New York City")|| (date=="1/24/20" && city=="Wuhan") || (date=="3/17/20" && city=="London") || (date=="3/20/20" && city=="Los Angeles")) { return 25; } //your birthday
             if (date == "4/11/20" && (city=="New York City"||city=="Los Angeles")) { return 28; }
             if(job=="None" && (city=="New York" || city=="Wuhan") && fatherAlive) { possibleIndexes.Add(27); }
+            if (daveParties >= 2) { possibleIndexes.Add(32); }
             int index = rnd.Next(0, possibleIndexes.Count);
             return possibleIndexes[index];
         }
@@ -419,5 +420,19 @@ namespace Engine.Functions
             if(stage!="Regular") { return 3; }
             return 2;
         }
+
+        public int randomAtStoreIndex()
+        {
+            Random rnd = new Random();
+            int randomRoll = rnd.Next(1, 11);
+            if (randomRoll ==1)
+            {
+                return 0;
+            }
+            return 1;
+        }
+            
+           
+        
     }
 }
